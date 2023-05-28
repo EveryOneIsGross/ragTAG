@@ -65,14 +65,20 @@ Brendon Fraser pretending to be a sandwich: The common theme among all three cha
 
 </pre>
 
-  ## To do
+## To do
 
-  ✅ have an executable proof of concept
-  ❌ refine internal prompts to clarify format and content of answers
-  ❌ augment the summary with better guided prompts
-  ❌ format the output better
-  ❌ figure out why I made this
-  ❌ rewrite in a language that I can deploy easier
-  ❌ build into a web interface or as a chatgpt plugin
+✅ have an executable proof of concept
+
+❌ refine internal prompts to clarify format and content of answers
+
+❌ augment the summary with better guided prompts
+
+❌ format the output better
+
+❌ figure out why I made this
+
+❌ rewrite in a language that I can deploy easier
+
+❌ build into a web interface or as a chatgpt plugin
   
   
