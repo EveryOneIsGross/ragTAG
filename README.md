@@ -1,3 +1,7 @@
+##What is ragTag?
+
+It's a Q&A chain of chatbots, designed to reflect on a users prompt from multiple perspectives to give an enriched answer. Assign a ragtag team of agents to help you solve your queires.  
+
 ## Abstract
 
 The provided code implements a dialogue system that interacts with multiple agents to generate responses to a user's question. It uses OpenAI's API for natural language processing tasks. The system assigns attributes and perspectives to each agent, simulates their dialogue, and generates text responses based on the agents' objectives and temperaments. The responses are converted into speech and saved as MP3 files.
