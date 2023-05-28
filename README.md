@@ -2,6 +2,8 @@
 
 The provided code implements a dialogue system that interacts with multiple agents to generate responses to a user's question. It uses OpenAI's API for natural language processing tasks. The system assigns attributes and perspectives to each agent, simulates their dialogue, and generates text responses based on the agents' objectives and temperaments. The responses are converted into speech and saved as MP3 files.
 
+![DreamShaper_v6_RagTAG_a_bunch_of_embodied_chatbots_being_frien_5](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/e167938b-fb65-4ad0-a9d5-db3219fa9df0)
+
 ## Workflow
 
 1. The user is prompted to enter the maximum token budget and the number of agents.
