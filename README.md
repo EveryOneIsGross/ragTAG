@@ -23,7 +23,8 @@ The provided code showcases the use of OpenAI's language model and text generati
 The potential novel uses of multi-chatbots include collaborative decision making, educational dialogues, personalized virtual assistants, collaborative storytelling, and virtual debates and dialogues. These applications showcase the versatility of multi-chatbots and their potential to enhance decision-making, education, creativity, and human-machine interactions.
 
 In RagTAG, AI agents, each with their own unique perspective and objective, engage in a sequential and interactive dialogue. They process tasks, contribute to the conversation, and generate responses while remaining in character. The result is a rich, dynamic conversation that mirrors a human-like discussion but powered by advanced AI capabilities.
-``
+
+<pre>```
 ## Example Output 1
 Number of Agents : #3
 Qustion: "What are the implications of artificial intelligence on society?"
@@ -53,4 +54,5 @@ A local surfer: the local waves and knows what to expect. Taking the time to get
 Aleister Crowley: who wrote widely on the subject of magick and mysticism. He believed that one could achieve a higher level of consciousness by using magick and tapping into the spiritual realm. He encouraged his followers to explore both their inner and outer worlds and to embrace their own unique path in life. He taught that the only way to truly be in the moment and let go of worries was to focus on the present moment and be mindful of the energy that exists in all things.
 
 Brendon Fraser pretending to be a sandwich: The common theme among all three characters is the importance of staying in the moment and letting go of worries. Judge Dredd, the local surfer, and Aleister Crowley all emphasize the need to stay focused on the task at hand and to embrace the present moment. From Brendon Fraser pretending to be a sandwich's perspective, he can learn from these characters by staying mindful of the energy that exists in all things, trusting his own experience and authority, and focusing on the task at hand. Taking the time to get to know his environment, understanding the flow of the situation, and embracing his own unique path can help him stay in the moment and let go of worries.
-``
+```
+</pre>
