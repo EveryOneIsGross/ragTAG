@@ -1,6 +1,6 @@
 ## What is ragTag?
 
-It's a Q&A chain of chatbots, designed to reflect on a users prompt from multiple perspectives to give an enriched answer. Assign a ragtag team of agents to help you solve your queires.  
+It's a Q&A chain of chatbots. It's purpose is to reflect on a users prompt from multiple perspectives and to give enriched answers. Assign a ragtag team of agents to help you solve your queires.  
 
 ## Abstract
 
