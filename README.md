@@ -1,4 +1,4 @@
-##What is ragTag?
+## What is ragTag?
 
 It's a Q&A chain of chatbots, designed to reflect on a users prompt from multiple perspectives to give an enriched answer. Assign a ragtag team of agents to help you solve your queires.  
 
