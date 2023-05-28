@@ -16,7 +16,8 @@ The provided code implements a dialogue system that interacts with multiple agen
 8. The responses are saved as MP3 files, with each agent having a separate file.
 9. The dialogue history is updated with each agent's response.
 10. The process is repeated for the next agent.
-11. Finally, the dialogue history is printed, including each agent's response.
+11. The last agent in the chain does their best to summarise.
+12. Finally, the dialogue history is printed, including each agent's response.
 
 ## Context
 
