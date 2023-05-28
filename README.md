@@ -1,6 +1,6 @@
 ## What is ragTag?
 
-It's a Q&A chain of chatbots. It's purpose is to reflect on a users prompt from multiple perspectives and to give enriched answers. Assign a ragtag team of agents to help you solve your queires.  
+It's a Q&A chain of chatbots. 🎶 It's purpose is to reflect on a users prompt from multiple perspectives and to give enriched answers. Assign a ragtag team of agents to help you solve your queires.  
 
 ## Abstract
 
@@ -64,3 +64,15 @@ Aleister Crowley: who wrote widely on the subject of magick and mysticism. He be
 Brendon Fraser pretending to be a sandwich: The common theme among all three characters is the importance of staying in the moment and letting go of worries. Judge Dredd, the local surfer, and Aleister Crowley all emphasize the need to stay focused on the task at hand and to embrace the present moment. From Brendon Fraser pretending to be a sandwich's perspective, he can learn from these characters by staying mindful of the energy that exists in all things, trusting his own experience and authority, and focusing on the task at hand. Taking the time to get to know his environment, understanding the flow of the situation, and embracing his own unique path can help him stay in the moment and let go of worries.
 
 </pre>
+
+  ## To do
+
+  ✅ have an executable proof of concept
+  ❌ refine internal prompts to clarify format and content of answers
+  ❌ augment the summary with better guided prompts
+  ❌ format the output better
+  ❌ figure out why I made this
+  ❌ rewrite in a language that I can deploy easier
+  ❌ build into a web interface or as a chatgpt plugin
+  
+  
