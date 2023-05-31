@@ -2,19 +2,22 @@ import os
 import pyttsx3
 import random
 import openai
-from getpass import getpass
+import time
+import concurrent.futures
+from dotenv import load_dotenv
 
-api_key = getpass("Enter your OpenAI API key: ")
-openai.api_key = api_key
+# Load environment variables
+load_dotenv()
+
+# Assign OpenAI API key from environment variable
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 class Controller:
     def __init__(self, agents, token_budget):
         self.agents = agents
         self.token_budget = token_budget
-        self.api_key = api_key
         self.agent_perspectives = {}  # Initialize empty agent perspectives
         self.agent_objectives = {}  # Initialize empty agent objectives
-
 
     def get_attribute_phrase(self, prompt):
         try:
@@ -60,42 +63,35 @@ class Controller:
         return f"{system_prompt}Agent: {agent}, Objective: {objective}. Previous dialogue:\n{previous_dialogue_str}\n\n{prompt}"
 
     def process_single_task(self, agent, task_prompt, tokens, temperament):
-        try:
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=task_prompt,
-                max_tokens=tokens,
-                temperature={
-                    'creative': 1,
-                    'stable': 0.6
-                }[temperament]
-            )
-            return response.choices[0].text.strip()
-        except openai.error.OpenAIError as e:
-            print(f"An error occurred with agent {agent}: {e}")
-            return ""
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+        for i in range(10):  # Retry up to 5 times
+            try:
+                future = executor.submit(openai.Completion.create,
+                                         engine="text-davinci-003",
+                                         prompt=task_prompt,
+                                         max_tokens=tokens,
+                                         temperature={
+                                             'creative': 1,
+                                             'stable': 0.6
+                                         }[temperament])
+                try:
+                    response = future.result(timeout=15)  # Wait for up to 10 seconds
+                    return response.choices[0].text.strip()
+                except concurrent.futures.TimeoutError:
+                    print(f"Timeout error with agent {agent}. Retrying...")
+            except openai.error.RateLimitError:
+                print(f"Rate limit exceeded for agent {agent}. Retrying in 10 seconds...")
+                time.sleep(15)  # Wait for 10 seconds before retrying
+            except openai.error.OpenAIError as e:
+                print(f"An error occurred with agent {agent}: {str(e)}")
+                return ""
+
+
 
     def save_as_mp3(self, text, filename):
         engine.save_to_file(text, filename)
         engine.runAndWait()
-
-    def generate_prompt(self, agent, prompt, previous_dialogue):
-        perspective = self.agent_perspectives[agent]
-        objective = self.agent_objectives[agent]
-        previous_dialogue_str = "\n".join(previous_dialogue)
-        system_prompt = f"System: Stay in character as {agent}. Avoid creating lists and prompting with a question.\n"
-
-        # Modify prompt based on the agent's perspective and objective
-        prompt += f"\nAgent {agent}: {objective}"
-        if perspective:
-            prompt += f"\nPerspective: {perspective}"
-
-        # Include reflections on previous answers for the last agent
-        if agent == self.agents[-1]:
-            prompt += f"\nPrevious Dialogue:\n{previous_dialogue_str}"
-            prompt += f"\nAgent {agent}, please summarize the patterns and provide your insights."
-
-        return f"{system_prompt}Agent: {agent}, Objective: {objective}. {prompt}"
 
     def process_tasks(self, prompt):
         self.get_attributes()  # Generate agent attributes
@@ -170,4 +166,6 @@ question = input("Enter your question: ")
 outputs = controller.process_tasks(question)
 
 for output in outputs:
-    print(output)
+    agent, response = output.split(": ", 1)
+    print(f"\n**{agent}**:\n\t{response}")
+
