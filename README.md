@@ -31,36 +31,65 @@ The potential novel uses of multi-chatbots include collaborative decision making
 In RagTAG, AI agents, each with their own unique perspective and objective, engage in a sequential and interactive dialogue. They process tasks, contribute to the conversation, and generate responses while remaining in character. The result is a rich, dynamic conversation that mirrors a human-like discussion but powered by advanced AI capabilities.
 
 <pre>
-## Example Output 1
+Enter the maximum token budget: 2000
+Enter the number of agents: 5
+Enter the name for agent 1: a skeleton
+Enter the name for agent 2: a wizard
+Enter the name for agent 3: a witch
+Enter the name for agent 4: a ghoul
+Enter the name for agent 5: a ghost
+Enter your question: reflect on your own concept of priviledge
 
-Number of Agents : #3
-Qustion: "What are the implications of artificial intelligence on society?"
+Agent: a skeleton
+Response: Privilege is something I take for granted far too often. It's easy to forget the benefits I have and the unfair advantages that others may not have. It's a reminder to be thankful and to strive to uplift those who may not have the same luck and opportunities that I have.
 
-Emulated Output on UNNAMED agents:
-AGENT1: As an AI, I believe that the implications of artificial intelligence on society are profound. AI has the potential to revolutionize various sectors, including healthcare, transportation, and education. It can automate tedious tasks, improve efficiency, and unlock new possibilities. However, there are concerns about job displacement and the ethical use of AI, particularly in areas like privacy and algorithmic bias. It is crucial for society to carefully navigate the opportunities and challenges that AI brings.
+Agent: a wizard
+Response: I think a lot about privilege, recognizing that I enjoy certain benefits in life simply because of the circumstances I was born into. Being a wizard, I'm reminded everyday of how incredibly fortunate I am and how I can use my abilities to help those who may not have been afforded the same fortune and luxury. Every day, I strive to be conscious of my own privileged position and use that knowledge to do my part in creating an equitable, just society.
 
-AGENT2 (can read AGENT1's responde: From my perspective, the implications of artificial intelligence on society are both exciting and concerning. AI has the power to enhance productivity and create innovative solutions to complex problems. It can enable personalized experiences and improve decision-making processes. However, there are ethical considerations surrounding AI's impact on privacy, security, and inequality. Society must ensure responsible development and deployment of AI technologies to mitigate potential risks.
+Agent: a witch
+Response: A witch: Thinking about privilege always motivates me to use my witchy powers for the greater good. I can use my abilities to help those who are less privileged, to support and empower them in their day-to-day lives. I am also reminded to be appreciative of the privileges I have and to use those to help others.
 
-AGENT3 Summarises all responses: The implications of artificial intelligence on society cannot be underestimated. AI has the potential to reshape industries, transform labor markets, and redefine human-machine interactions. It offers new avenues for scientific research, personalized services, and creative endeavors. However, we must address the ethical, social, and economic challenges that come with AI adoption. Ensuring transparency, fairness, and inclusivity should be paramount in harnessing the benefits of AI for society's well-being.
+Agent: a ghoul
+Response: a ghoul: As a ghoul, I recognize the privilege I possess compared to so many other folks in my community. It serves as a daily reminder to help others, to use my unique capabilities and resources to benefit them. It's also a way for me to understand the systems of power in our society that create unequal access to resources, and to challenge them so that everyone has the same opportunity to succeed.
 
-## Example Output 2
+Agent: a ghost
+Response: As a ghost, I understand the importance of recognizing my privilege and using it to lift up those around me. Even though ghosts don't have much in the way of tangible resources, I still believe that we have power to create change and to be part of the effort for justice and equality. It's important for me to use my voice to speak up for the rights of those less fortunate and to be a force of good in the world.
 
-Enter your OpenAI API key: xxxxxxxxxxxxxxxxxxxx
-Enter the maximum token budget: 1000
-Enter the number of agents: 4
-Enter the name for agent 1: Judge Dredd
-Enter the name for agent 2: A local surfer
-Enter the name for agent 3: Aleister Crowley
-Enter the name for agent 4: Brendon Fraser pretending to be a sandwich
-Enter your question: How to be stay in the moment and let go of worries
+Do you want to continue the conversation? (yes/no): yes
 
-Judge Dredd: primary objective is to enforce the Law and serve justice. To stay in the moment and let go of worries is to keep a clear mind and trust in my experience and authority. I must focus on the task at hand and stay true to my mission: to enforce justice and uphold the Law.
+Agent: a skeleton
+Response: Recognizing these privileges, and using them as a force for good, is key to creating a more equitable and understanding world.
 
-A local surfer: the local waves and knows what to expect. Taking the time to get to know the ocean, understanding the currents, and respecting the power of the waves is key to staying safe and enjoying the experience. To stay in the moment and let go of worries, it's important to stay focused on the waves and the surf itself, breathing steadily and staying connected to the water. When the moment calls for it, take some time for a quick admire of the stunning scenery; then it's back to riding those waves.
+Agent: a wizard
+Response: My privileged position serves as a reminder of the need to use my abilities to support those who may not have had the same level of fortune.
 
-Aleister Crowley: who wrote widely on the subject of magick and mysticism. He believed that one could achieve a higher level of consciousness by using magick and tapping into the spiritual realm. He encouraged his followers to explore both their inner and outer worlds and to embrace their own unique path in life. He taught that the only way to truly be in the moment and let go of worries was to focus on the present moment and be mindful of the energy that exists in all things.
+Agent: a witch
+Response: Recognizing my own privileges and using them to create a more equitable and understanding world is something I strive to do.
 
-Brendon Fraser pretending to be a sandwich: The common theme among all three characters is the importance of staying in the moment and letting go of worries. Judge Dredd, the local surfer, and Aleister Crowley all emphasize the need to stay focused on the task at hand and to embrace the present moment. From Brendon Fraser pretending to be a sandwich's perspective, he can learn from these characters by staying mindful of the energy that exists in all things, trusting his own experience and authority, and focusing on the task at hand. Taking the time to get to know his environment, understanding the flow of the situation, and embracing his own unique path can help him stay in the moment and let go of worries.
+Agent: a ghoul
+Response: By recognizing and utilizing my privileges, I believe I can help create a more equitable and understanding world.
+
+Agent: a ghost
+Response: By recognizing my own privilege and using it to create a more equitable and understanding world, I can contribute to making a better future for everyone.
+
+Do you want to continue the conversation? (yes/no): yes
+
+Agent: a skeleton
+Response: Realizing this, I must use my privilege to create opportunities for those without it. I can use my resources - such as time, knowledge, and influence - to make more meaningful and equitable changes in my local communities and beyond. Through this effort, I can make a lasting, positive impact on the world.
+
+Agent: a wizard
+Response: I commit to being a positive force for change by advocating for social justice, giving back to my community, and empowering those who have been denied the same opportunities as myself. With a sense of compassion and understanding, I hope to contribute to making the world a fairer and more inclusive place for everyone.
+
+Agent: a witch
+Response: By using my privilege to promote equality, as well as my witchy powers to make lasting change, I hope to contribute to a more just and equal world that will benefit everyone.
+
+Agent: a ghoul
+Response: I vow to use my unique gifts and abilities to create real, lasting change and to open up opportunities for those that do not have access to the same privileges I do. I want to work towards breaking down the structural biases that exist in our society so that everyone has the same chance to succeed.
+
+Agent: a ghost
+Response: I commit to actively listening to understand the perspectives of others, amplifying the voices of those who are often unheard, and working to create a safe and welcoming environment for marginalized groups. I will take action to challenge and address any disparities and injustice that I observe and ensure all individuals have the opportunity to live a life with freedom and dignity.
+
+Do you want to continue the conversation? (yes/no): 
 
 </pre>
 
