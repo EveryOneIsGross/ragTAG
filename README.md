@@ -1,10 +1,6 @@
-## What is ragTAG?
-
-ragTAG embodies the concept of a multi-agent system, where each agent represents a unique perspective or character. It's a digital symposium, a meeting of minds, where each agent contributes to the conversation based on their unique attributes and perspectives. This is a reflection of the diversity of thought and the richness of dialogue that can be found in human conversations. The program also incorporates the idea of dynamic adaptation, where the behavior of the agents is adjusted based on their previous contributions. This mirrors the way humans learn and adapt in conversations.
-
 ## Abstract
 
-Imagine having a roundtable discussion with multiple unique characters, each contributing their unique insights and perspectives to the conversation. That's what our program does. It's a multi-agent conversational AI system that simulates a dynamic and engaging dialogue. Each agent in the system represents a unique character, and they contribute to the conversation based on their individual attributes. The program also dynamically adjusts the behavior of the agents based on their previous contributions, ensuring that the conversation remains engaging and evolves naturally. Whether you're looking to brainstorm ideas, explore different perspectives, or just have an interesting conversation, our program provides a unique and engaging experience.
+ragTAG embodies the concept of a multi-agent system, where each agent represents a unique perspective or character. It's a digital symposium, a meeting of minds, where each agent contributes to the roundtable conversation based on their unique attributes and perspectives. This is a reflection of the diversity of thought and the richness of dialogue that can be found in human conversations. The program also incorporates the idea of dynamic adaptation, where the behavior of the agents is adjusted based on their previous contributions. This mirrors the way humans learn and adapt in conversations.
 
 ## Workflow
 
