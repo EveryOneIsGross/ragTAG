@@ -1,10 +1,10 @@
 ## What is ragTAG?
 
-It's a Q&A chain of chatbots. 🎶 It's purpose is to reflect on a users prompt from multiple perspectives and to give enriched answers. Assign a ragtag team of agents to help you solve your queires.  
+ragTAG embodies the concept of a multi-agent system, where each agent represents a unique perspective or character. It's a digital symposium, a meeting of minds, where each agent contributes to the conversation based on their unique attributes and perspectives. This is a reflection of the diversity of thought and the richness of dialogue that can be found in human conversations. The program also incorporates the idea of dynamic adaptation, where the behavior of the agents (in this case, their "temperature") is adjusted based on their previous contributions. This mirrors the way humans learn and adapt in conversations.
 
 ## Abstract
 
-The provided code implements a dialogue system that interacts with multiple agents to generate responses to a user's question. It uses OpenAI's API for natural language processing tasks. The system assigns attributes and perspectives to each agent, simulates their dialogue, and generates text responses based on the agents' personality and temperaments. 
+Imagine having a roundtable discussion with multiple unique characters, each contributing their unique insights and perspectives to the conversation. That's what our program does. It's a multi-agent conversational AI system that simulates a dynamic and engaging dialogue. Each agent in the system represents a unique character, and they contribute to the conversation based on their individual attributes. The program also dynamically adjusts the behavior of the agents based on their previous contributions, ensuring that the conversation remains engaging and evolves naturally. Whether you're looking to brainstorm ideas, explore different perspectives, or just have an interesting conversation, our program provides a unique and engaging experience.
 
 ![DreamShaper_v6_RagTAG_a_bunch_of_embodied_chatbots_being_frien_5](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/e167938b-fb65-4ad0-a9d5-db3219fa9df0)
 
@@ -21,14 +21,6 @@ The provided code implements a dialogue system that interacts with multiple agen
 9. The process is repeated for the next agent.
 10. The last agent in the chain does their best to summarise.
 11. Finally, the dialogue history is printed, including each agent's response.
-
-## Context
-
-The provided code showcases the use of OpenAI's language model and text generation capabilities to simulate dialogue between multiple agents. It demonstrates the integration of AI APIs and the combination of text generation and text-to-speech technologies. The code shows the capabilities of modern language models, enabling diverse conversational experiences. 
-
-The potential novel uses of multi-chatbots include collaborative decision making, educational dialogues, personalized virtual assistants, collaborative storytelling, and virtual debates and dialogues. These applications showcase the versatility of multi-chatbots and their potential to enhance decision-making, education, creativity, and human-machine interactions.
-
-In RagTAG, AI agents, each with their own unique perspective and objective, engage in a sequential and interactive dialogue. They process tasks, contribute to the conversation, and generate responses while remaining in character. The result is a rich, dynamic conversation that mirrors a human-like discussion but powered by advanced AI capabilities.
 
 <pre>
 Enter the maximum token budget: 2000
