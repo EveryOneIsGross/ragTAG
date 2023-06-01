@@ -132,6 +132,15 @@ class Controller:
                     print(f"Blank response from agent {agent}. Retrying...")
                     continue  # Continue to the next iteration of the loop to retry
 
+                # Add the response to the conversation memory
+                if agent in self.conversation_memory:
+                    self.conversation_memory[agent].append(generated_text)
+                else:
+                    self.conversation_memory[agent] = [generated_text]
+
+                # Save the conversation memory after each response
+                self.save_conversation_memory("conversation_memory.txt")
+
                 return generated_text
 
             except concurrent.futures.TimeoutError:
@@ -144,6 +153,7 @@ class Controller:
 
         # Return an empty string if all retries are exhausted and the response is still blank
         return ""
+
 
 
 
@@ -302,10 +312,8 @@ def main():
     agents = [input(f"Enter the name for agent {i+1}: ") for i in range(num_agents)]
     controller = Controller(agents, response_token_budget)
 
-
-
     question = input("Enter your question: ")
-    initial_tokens = 200 
+    initial_tokens = 200
     outputs = controller.process_tasks(question, initial_tokens)
 
     for output in outputs:
