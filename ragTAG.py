@@ -19,14 +19,15 @@ class Controller:
         self.agent_perspectives = {}
         self.agent_objectives = {}
         self.conversation_memory = {}
+        self.initial_prompt = True
 
     def get_attribute_phrase(self, prompt):
         try:
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
-                max_tokens=50,
-                temperature=1,
+                max_tokens=100,
+                temperature=0.4,
                 n=1,
                 stop=None
             )
@@ -55,8 +56,8 @@ class Controller:
 
 
     def generate_prompt(self, agent, prompt, previous_dialogue):
-        perspective = self.agent_perspectives[agent]
-        objective = self.agent_objectives[agent]
+        perspective = self.agent_perspectives.get(agent, "")
+        objective = self.agent_objectives.get(agent, "")
         previous_dialogue_str = "\n".join(previous_dialogue)
         system_prompt = f"System: You are {agent}. Avoid creating lists and prompting with a question.\n"
 
@@ -191,32 +192,39 @@ class Controller:
         return summary
 
     def generate_new_prompt(self, last_answer, history):
-        for _ in range(3):  # Retry up to 3 times
+        agent_name = last_answer[0]
+        objective = self.agent_objectives.get(agent_name, "")
+        
+        if objective:
+            prompt = (
+                f"System: Stay in character as {agent_name}. Avoid creating lists and prompting with a question.\n"
+                f"Agent: {agent_name}, Objective: {objective}. Previous dialogue:\n{history}\n\n"
+            )
+            
             try:
                 response = openai.Completion.create(
                     engine="text-davinci-003",
-                    prompt=f"System: Stay in character as {last_answer[0]}. Avoid creating lists and prompting with a question.\nAgent: {last_answer[0]}, Objective: {self.agent_objectives[last_answer[0]]}. Previous dialogue:\n{history}\n\n",
+                    prompt=prompt,
                     max_tokens=100,
                     temperature=1,
                     n=1,
                     stop=None
                 )
                 return response.choices[0].text.strip()
-            except openai.error.RateLimitError:
-                print("Rate limit exceeded. Waiting for 20 seconds before retrying...")
-                time.sleep(20)  # Wait for 20 seconds before retrying
             except openai.error.OpenAIError as e:
                 print(f"An error occurred: {str(e)}")
-                return ""
+        
+        return ""
+
 
 
     def process_tasks(self, prompt, initial_tokens):
-        self.get_attributes()
+       # self.get_attributes()
         previous_dialogue = []
         first_iteration = True
 
         # Set a fixed response_token_budget for all agents except Logic
-        response_token_budget = 50
+        response_token_budget = 250
 
         for agent in self.agents[:-1]:
 
@@ -265,7 +273,7 @@ class Controller:
 
 
 def main():
-    max_token_limit = 4097
+    max_token_limit = 4000
     token_budget = int(input("Enter the maximum token budget: "))
     if token_budget > max_token_limit:
         print(f"Token budget exceeds the maximum limit of {max_token_limit}. Setting it to {max_token_limit//2}")
