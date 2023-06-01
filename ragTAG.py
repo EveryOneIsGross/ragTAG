@@ -1,5 +1,4 @@
 import os
-import pyttsx3
 import random
 import openai
 import time
@@ -13,18 +12,20 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 class Controller:
-    def __init__(self, agents, token_budget):
+    def __init__(self, agents, logic_token_budget, response_token_budget):
         self.agents = agents
-        self.token_budget = token_budget
-        self.agent_perspectives = {}  # Initialize empty agent perspectives
-        self.agent_objectives = {}  # Initialize empty agent objectives
+        self.logic_token_budget = logic_token_budget
+        self.response_token_budget = response_token_budget
+        self.agent_perspectives = {}
+        self.agent_objectives = {}
+        self.conversation_memory = {}
 
     def get_attribute_phrase(self, prompt):
         try:
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
-                max_tokens=20,
+                max_tokens=50,
                 temperature=1,
                 n=1,
                 stop=None
@@ -36,136 +37,275 @@ class Controller:
 
     def get_attributes(self):
         for agent in self.agents:
-            describe_prompt = f"Describe {agent}"
-            perspective_prompt = f"What is {agent}'s perspective?"
+            describe_prompt = f"Describe yourself as {agent}"
+            perspective_prompt = f"What is your perspective as {agent}"
 
-            attribute_phrase = self.get_attribute_phrase(describe_prompt)
-            perspective = self.get_attribute_phrase(perspective_prompt)
+            for _ in range(3):  # Retry up to 3 times
+                try:
+                    attribute_phrase = self.get_attribute_phrase(describe_prompt)
+                    perspective = self.get_attribute_phrase(perspective_prompt)
 
-            self.agent_perspectives[agent] = perspective
-            self.agent_objectives[agent] = attribute_phrase
+                    if attribute_phrase and perspective:  # If both phrases are successfully retrieved
+                        self.agent_perspectives[agent] = perspective
+                        self.agent_objectives[agent] = attribute_phrase
+                        break  # Break the loop as we have successfully retrieved the phrases
+                except openai.error.OpenAIError as e:
+                    print(f"An error occurred while generating attribute phrase for {agent}: {e}")
+                    time.sleep(10)  # Wait for 10 second before retrying
 
-    def assign_temperament(self):
-        half = len(self.agents) // 2
-        return {self.agents[i]: 'creative' if i < half else 'stable' for i in range(len(self.agents))}
 
     def generate_prompt(self, agent, prompt, previous_dialogue):
         perspective = self.agent_perspectives[agent]
         objective = self.agent_objectives[agent]
         previous_dialogue_str = "\n".join(previous_dialogue)
-        system_prompt = f"System: Stay in character as {agent}. Avoid creating lists and prompting with a question.\n"
+        system_prompt = f"System: You are {agent}. Avoid creating lists and prompting with a question.\n"
 
-        # Modify prompt based on the agent's perspective and objective
-        prompt += f"\nAgent {agent}: {objective}"
+        if agent == self.agents[0]:  # First agent
+            prompt += f"\nYou: {objective}"
+        else:
+            prompt += f"\nYou: {objective}\n{previous_dialogue_str}"
+
         if perspective:
             prompt += f"\nPerspective: {perspective}"
 
+        memories = []
+        for prev_agent, dialogue in self.conversation_memory.items():
+            if prev_agent == agent or prev_agent in previous_dialogue_str:
+                memories.append(f"Agent: {prev_agent}\n" + "\n".join(dialogue))
+
+        memories_section = ""
+        if memories:
+            memories_section = f"{agent} Memories:"
+            for memory in memories:
+                memories_section += f"\n{memory}"
+
+        answers_section = ""
+        agent_answers = self.conversation_memory.get(agent, [])
+        if agent_answers:
+            answers_section = f"{agent} Answers:"
+            for answer in agent_answers:
+                answers_section += f"\n{answer}"
+
+        prompt += f"\n\n{memories_section}\n\n{answers_section}"
+
         return f"{system_prompt}Agent: {agent}, Objective: {objective}. Previous dialogue:\n{previous_dialogue_str}\n\n{prompt}"
 
-    def process_single_task(self, agent, task_prompt, tokens, temperament):
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
 
-        for i in range(10):  # Retry up to 5 times
+    
+
+    def process_single_task(self, agent, task_prompt, tokens):
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
+
+        for i in range(10):
             try:
-                future = executor.submit(openai.Completion.create,
-                                         engine="text-davinci-003",
-                                         prompt=task_prompt,
-                                         max_tokens=tokens,
-                                         temperature={
-                                             'creative': 1,
-                                             'stable': 0.6
-                                         }[temperament])
-                try:
-                    response = future.result(timeout=15)  # Wait for up to 10 seconds
-                    return response.choices[0].text.strip()
-                except concurrent.futures.TimeoutError:
-                    print(f"Timeout error with agent {agent}. Retrying...")
+                previous_answers = self.conversation_memory.get(agent, [])
+                full_prompt = "\n".join(previous_answers) + "\n" + task_prompt
+
+                if agent == "Logic":
+                    token_budget = self.logic_token_budget
+                else:
+                    token_budget = self.response_token_budget
+
+                token_budget = min(token_budget, tokens)
+
+                future = executor.submit(
+                    openai.Completion.create,
+                    engine="text-davinci-003",
+                    prompt=full_prompt,
+                    max_tokens=token_budget,
+                    temperature=1
+                )
+
+                response = future.result(timeout=60)
+                response_text = [partial_response.text.strip() for partial_response in response.choices]
+                generated_text = " ".join(response_text)
+                return generated_text
+
+
+            except concurrent.futures.TimeoutError:
+                print(f"Timeout error with agent {agent}. Retrying...")
             except openai.error.RateLimitError:
                 print(f"Rate limit exceeded for agent {agent}. Retrying in 10 seconds...")
-                time.sleep(15)  # Wait for 10 seconds before retrying
+                time.sleep(10)
             except openai.error.OpenAIError as e:
                 print(f"An error occurred with agent {agent}: {str(e)}")
                 return ""
 
 
 
-    def save_as_mp3(self, text, filename):
-        engine.save_to_file(text, filename)
-        engine.runAndWait()
+    def save_conversation_memory(self, filename):
+        with open(filename, "w") as file:
+            for agent, dialogue in self.conversation_memory.items():
+                file.write(f"Agent: {agent}\n")
+                for line in dialogue:
+                    file.write(f"{line}\n")
 
-    def process_tasks(self, prompt):
-        self.get_attributes()  # Generate agent attributes
-        temperament_assignment = self.assign_temperament()
+    def load_conversation_memory(self, filename):
+        try:
+            with open(filename, "r") as file:
+                current_agent = None
+                for line in file:
+                    if line.startswith("Agent:"):
+                        current_agent = line.split(":")[1].strip()
+                        if current_agent not in self.conversation_memory:
+                            self.conversation_memory[current_agent] = []
+                    elif current_agent:
+                        self.conversation_memory[current_agent].append(line.strip())
+        except FileNotFoundError:
+            self.conversation_memory = {}
+
+    def summarize_random_answers(self, num_answers):
+        agents = list(self.conversation_memory.keys())
+        agent = random.choice(agents)
+        agent_answers = self.conversation_memory.get(agent, [])
+
+        if len(agent_answers) >= num_answers:
+            random_answers = random.sample(agent_answers, num_answers)
+            random_answers_combined = "\n".join(random_answers)
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=random_answers_combined,
+                max_tokens=100,
+                temperature=0.3,
+                n=1,
+                stop=None
+            )
+            summary = response.choices[0].text.strip()
+            return summary
+        else:
+            return "Insufficient answers to summarize"
+
+    def openai_summarize(self, prompt):
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=200,
+            temperature=0.2,
+            top_p=1.0,
+            frequency_penalty=0.5,
+            presence_penalty=0.0,
+            stop=None,
+            n=1
+        )
+        summary = response.choices[0].text.strip()
+        return summary
+
+    def generate_new_prompt(self, last_answer, history):
+        for _ in range(3):  # Retry up to 3 times
+            try:
+                response = openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=f"System: Stay in character as {last_answer[0]}. Avoid creating lists and prompting with a question.\nAgent: {last_answer[0]}, Objective: {self.agent_objectives[last_answer[0]]}. Previous dialogue:\n{history}\n\n",
+                    max_tokens=100,
+                    temperature=1,
+                    n=1,
+                    stop=None
+                )
+                return response.choices[0].text.strip()
+            except openai.error.RateLimitError:
+                print("Rate limit exceeded. Waiting for 20 seconds before retrying...")
+                time.sleep(20)  # Wait for 20 seconds before retrying
+            except openai.error.OpenAIError as e:
+                print(f"An error occurred: {str(e)}")
+                return ""
+
+
+    def process_tasks(self, prompt, initial_tokens):
+        self.get_attributes()
         previous_dialogue = []
+        first_iteration = True
+
+        # Set a fixed response_token_budget for all agents except Logic
+        response_token_budget = 50
 
         for agent in self.agents[:-1]:
-            # Randomly select voice modulators
-            pitch = random.uniform(0.2, 6)  # Random pitch
-            rate = random.uniform(180, 200)  # Random rate
-            volume = random.uniform(0.8, 1.2)  # Random volume
 
-            # Randomly select voice gender
-            gender = random.choice(["male", "female"])  # Choose between "male" and "female"
+            if first_iteration:
+                tokens = initial_tokens
+                first_iteration = False
+            else:
+                tokens = self.logic_token_budget if agent == "Logic" else response_token_budget
 
-            # Configure voice modulators
-            engine.setProperty("pitch", pitch)
-            engine.setProperty("rate", rate)
-            engine.setProperty("volume", volume)
-
-            # Set voice gender
-            voices = engine.getProperty("voices")
-            voice = [v for v in voices if gender.lower() in v.name.lower()]
-            if voice:
-                engine.setProperty("voice", voice[0].id)
-
-            tokens = self.token_budget
-            temperament = temperament_assignment[agent]
             task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
 
-            output = self.process_single_task(agent, task_prompt, tokens, temperament)
-            previous_dialogue.append(f"{agent}: {output}")
+            output = self.process_single_task(agent, task_prompt, tokens)
 
-            # Save agent answer as an MP3 file
-            filename = f"{question}_{agent}.mp3"
-            self.save_as_mp3(output, filename)
+            if first_iteration:
+                previous_dialogue.append(f"{agent}: {output}")
+                print(f"\nInitial response of {agent}: {output}")
+            else:
+                if len(output.split()) > response_token_budget:
+                    output = " ".join(output.split()[:response_token_budget])
+                previous_dialogue.append(f"{agent}: {output}")
 
-        # Process response for the last agent
+            # Removed saving as mp3
+
+            if agent in self.conversation_memory:
+                self.conversation_memory[agent].append(output)
+            else:
+                self.conversation_memory[agent] = [output]
+
         agent = self.agents[-1]
-        pitch = random.uniform(0.3, 4)
-        rate = random.uniform(166, 200)
-        volume = random.uniform(0.8, 0.9)
-        gender = random.choice(["male", "female"])
-
-        engine.setProperty("pitch", pitch)
-        engine.setProperty("rate", rate)
-        engine.setProperty("volume", volume)
-        voices = engine.getProperty("voices")
-        voice = [v for v in voices if gender.lower() in v.name.lower()]
-        if voice:
-            engine.setProperty("voice", voice[1].id)
-
-        tokens = self.token_budget * 2
-        temperament = temperament_assignment[agent]
+        # Removed pyttsx3 properties and variables
+        tokens = self.logic_token_budget if agent == "Logic" else response_token_budget
         task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
 
-        output = self.process_single_task(agent, task_prompt, tokens, temperament)
+        output = self.process_single_task(agent, task_prompt, tokens)
         previous_dialogue.append(f"{agent}: {output}")
 
-        # Save agent answer as an MP3 file
-        filename = f"{question}_{agent}.mp3"
-        self.save_as_mp3(output, filename)
+        # Removed saving as mp3
+
+        if agent in self.conversation_memory:
+            self.conversation_memory[agent].append(output)
+        else:
+            self.conversation_memory[agent] = [output]
 
         return previous_dialogue
 
-token_budget = int(input("Enter the maximum token budget: "))
-num_agents = int(input("Enter the number of agents: "))  # Prompt the user to input the number of agents
-agents = [input(f"Enter the name for agent {i+1}: ") for i in range(num_agents)]  # Change the range according to the user input
-engine = pyttsx3.init()
-controller = Controller(agents, token_budget)
-question = input("Enter your question: ")
-outputs = controller.process_tasks(question)
 
-for output in outputs:
-    agent, response = output.split(": ", 1)
-    print(f"\n**{agent}**:\n\t{response}")
 
+def main():
+    max_token_limit = 4097
+    token_budget = int(input("Enter the maximum token budget: "))
+    if token_budget > max_token_limit:
+        print(f"Token budget exceeds the maximum limit of {max_token_limit}. Setting it to {max_token_limit//2}")
+        token_budget = max_token_limit // 2
+    logic_token_budget = token_budget // 2
+    response_token_budget = token_budget // 2
+    num_agents = int(input("Enter the number of agents: "))
+    agents = [input(f"Enter the name for agent {i+1}: ") for i in range(num_agents)]
+    controller = Controller(agents, logic_token_budget, response_token_budget)
+
+
+    question = input("Enter your question: ")
+    initial_tokens = 2000 
+    outputs = controller.process_tasks(question, initial_tokens)
+
+    for output in outputs:
+        agent, response = output.split(": ", 1)
+        print(f"\nAgent: {agent}")
+        print(f"Response: {response}")
+
+
+    while True:
+        continue_conversation = input("\nDo you want to continue the conversation? (yes/no): ")
+        if continue_conversation.lower() == "no":
+            break
+        else:
+            last_answer = outputs[-1].split(": ", 1)
+            history = "\n".join(controller.conversation_memory[last_answer[0]])
+            new_prompt = controller.generate_new_prompt(last_answer, history)
+            random_answers_summary = controller.summarize_random_answers(2)
+            new_question = f"{random_answers_summary}\n{new_prompt}"
+            outputs = controller.process_tasks(new_question, token_budget)
+            for output in outputs:
+                agent, response = output.split(": ", 1)
+                print(f"\nAgent: {agent}")
+                print(f"Response: {response}")
+
+
+    conversation_memory_file = "conversation_memory.txt"
+    controller.save_conversation_memory(conversation_memory_file)
+
+if __name__ == '__main__':
+    main()
