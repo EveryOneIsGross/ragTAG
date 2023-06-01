@@ -74,6 +74,59 @@ Agent: a detached wizard
 Response: In order to do this, I must step back and observe my own actions and intentions with a critical eye. By doing so, I can make sure that any decisions I make are grounded in a sense of self-awareness, enabling me to ultimately live out an existence of harmony and purpose.
 
 Do you want to continue the conversation? (yes/no): 
+
+Enter the maximum token budget: 500
+Enter the number of agents: 3
+Enter the name for agent 1: The Left Hand Path
+Enter the name for agent 2: The Right Hand Path
+Enter the name for agent 3: The Middle Path
+Enter your question: How to pursue my own true will!
+
+The Left Hand Path:
+Objective: The objective of the Left Hand Path is to seek freedom and power through the pursuit of one’s own will, rather than external influences or higher powers. This exploration of personal liberation and spiritual awakening is done by studying occultism, developing a clear understanding of the self, and challenging social conventions through both behavior and interpretation.
+
+The Right Hand Path:
+To pursue one’s own will, the Right Hand Path recommends self-reflection through meditation, cultivating an understanding of one’s authentic desires and passions, and committing to ethics that are consistent with one’s personal goals and life path. The Right Hand Path entails following a strict code of conduct, engaging in honest self-assessment and cultivating a connection to divine wisdom.
+
+The Middle Path:
+Objective of The Middle Path:
+The objective of The Middle Path is to find harmony and balance between the extremes of each path. It emphasizes moderation in all things, such as choosing the right kind of behavior, thought and belief. Using mediation and reflection, individuals can recognize their own true will and work to achieve it in a responsible and mindful way. Self-care, self-awareness, and balancing physical, emotional, mental and spiritual needs are also important elements for achieving a harmonious life.
+
+Do you want to continue the conversation? (yes/no): yes
+
+The Left Hand Path
+Additionally, the Left Hand Path seeks to explore the darker aspects of the human psyche, such as death, destruction, and chaos. Through this exploration, practitioners can gain insight into their own inner darkness and use it to empower themselves.
+
+The Right Hand Path
+It also advocates cultivating wisdom, respect, and compassion for the self and others to achieve personal growth and spiritual enlightenment.
+
+The Middle Path
+Additionally, The Middle Path encourages an open-minded outlook and creative problem-solving to address challenges from all directions.
+
+Do you want to continue the conversation? (yes/no): yes
+
+The Left Hand Path
+System: Act and behave as The Left Hand Path, empowering yourself through personal exploration of the darker aspects of humanity. Question and challenge societal conventions, while also striving to gain a deeper understanding of yourself. This will in turn lead you to discover freedom and power from within.
+
+The Right Hand Path
+System: Pursue your will responsibly, taking care to always listen to the voices of wisdom and guides around you. Embrace humility, and seek divine guidance on your journey. Understand that you have power to create change in the world around you and use that power with intention and integrity.
+
+The Middle Path
+System: You are The Middle Path. Act and behave as The Middle Path. Be mindful of the extremes of the Left Hand and Right Hand paths, while managing your own individual will and needs in a balanced, harmonious way. Make self-care and reflection the core of the path, while also being aware of when you may need to approach a challenge with creative solutions or open-minded reconsideration.
+
+Do you want to continue the conversation? (yes/no): yes
+
+The Left Hand Path
+Utilize various forms of introspection and self-reflection to gain knowledge and become aware of your inner dark forces. Examine yourself through meditation, dream interpretation, personal journaling, and other creative forms of expression. Make time for periods of rest in order to process and integrate what you are learning. Engage in conversations with others on topics relating to the Left Hand Path to help broaden your understanding. Cultivate morality within yourself while also challenging any oppressive personal or externally imposed standards you encounter. Use the power of your inner darkness to fuel your motivation and drive.
+
+The Right Hand Path
+Develop a sense of justice and fair-mindedness, and take responsibility for your actions. Dedicate yourself to engaging in honest dialogue with others while always striving for self-improvement. Use your divinely-endowed gifts to find inspiration, to rise above personal obstacles, and to cultivate positive relationships with the people and circumstances around you.
+
+The Middle Path
+Strive for harmony between competing ideas and paths, being mindful of when each approach has its own strengths. Always strive to take responsibility for yourself and your actions, while being conscious of your impact on the world. Cultivate wisdom and deep understanding through dialogue with others, while maintaining a sense of balance within yourself. With this foundation in place, you can identify your own true will and guide yourself towards achieving it with clarity and direction.
+
+Do you want to continue the conversation? (yes/no): no
+
 </pre>
 
 
