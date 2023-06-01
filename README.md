@@ -22,6 +22,7 @@ Imagine having a roundtable discussion with multiple unique characters, each con
 
 >
 <pre>
+`
 Enter the maximum token budget: 250
 Enter the number of agents: 3
 Enter the name for agent 1: a sad wizard
@@ -73,6 +74,7 @@ Agent: a detached wizard
 Response: In order to do this, I must step back and observe my own actions and intentions with a critical eye. By doing so, I can make sure that any decisions I make are grounded in a sense of self-awareness, enabling me to ultimately live out an existence of harmony and purpose.
 
 Do you want to continue the conversation? (yes/no): 
+`
 <pre>
 >
 
