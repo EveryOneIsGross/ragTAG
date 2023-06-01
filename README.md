@@ -4,7 +4,7 @@ It's a Q&A chain of chatbots. 🎶 It's purpose is to reflect on a users prompt 
 
 ## Abstract
 
-The provided code implements a dialogue system that interacts with multiple agents to generate responses to a user's question. It uses OpenAI's API for natural language processing tasks. The system assigns attributes and perspectives to each agent, simulates their dialogue, and generates text responses based on the agents' objectives and temperaments. The responses are converted into speech and saved as MP3 files.
+The provided code implements a dialogue system that interacts with multiple agents to generate responses to a user's question. It uses OpenAI's API for natural language processing tasks. The system assigns attributes and perspectives to each agent, simulates their dialogue, and generates text responses based on the agents' personality and temperaments. 
 
 ![DreamShaper_v6_RagTAG_a_bunch_of_embodied_chatbots_being_frien_5](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/e167938b-fb65-4ad0-a9d5-db3219fa9df0)
 
@@ -17,11 +17,10 @@ The provided code implements a dialogue system that interacts with multiple agen
 5. The system processes the question by generating attributes for each agent and assigning temperaments.
 6. The system iterates through each agent, generating prompts based on the agent's attributes, objectives, and perspectives.
 7. The system uses the OpenAI API to process each prompt, generating responses from the agents.
-8. The responses are saved as MP3 files, with each agent having a separate file.
-9. The dialogue history is updated with each agent's response.
-10. The process is repeated for the next agent.
-11. The last agent in the chain does their best to summarise.
-12. Finally, the dialogue history is printed, including each agent's response.
+8. The dialogue history is updated with each agent's response.
+9. The process is repeated for the next agent.
+10. The last agent in the chain does their best to summarise.
+11. Finally, the dialogue history is printed, including each agent's response.
 
 ## Context
 
