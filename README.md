@@ -6,8 +6,6 @@ ragTAG embodies the concept of a multi-agent system, where each agent represents
 
 Imagine having a roundtable discussion with multiple unique characters, each contributing their unique insights and perspectives to the conversation. That's what our program does. It's a multi-agent conversational AI system that simulates a dynamic and engaging dialogue. Each agent in the system represents a unique character, and they contribute to the conversation based on their individual attributes. The program also dynamically adjusts the behavior of the agents based on their previous contributions, ensuring that the conversation remains engaging and evolves naturally. Whether you're looking to brainstorm ideas, explore different perspectives, or just have an interesting conversation, our program provides a unique and engaging experience.
 
-![DreamShaper_v6_RagTAG_a_bunch_of_embodied_chatbots_being_frien_5](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/e167938b-fb65-4ad0-a9d5-db3219fa9df0)
-
 ## Workflow
 
 1. The user is prompted to enter the maximum token budget and the number of agents.
