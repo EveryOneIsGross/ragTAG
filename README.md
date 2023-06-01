@@ -21,6 +21,7 @@ Imagine having a roundtable discussion with multiple unique characters, each con
 11. Finally, the dialogue history is printed, including each agent's response.
 
 
+#Example Output
 >
 <pre>
 Enter the maximum token budget: 250
