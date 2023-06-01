@@ -20,9 +20,8 @@ Imagine having a roundtable discussion with multiple unique characters, each con
 10. The last agent in the chain does their best to summarise.
 11. Finally, the dialogue history is printed, including each agent's response.
 
-`
+
 >
-<pre>
 
 Enter the maximum token budget: 250
 Enter the number of agents: 3
@@ -76,9 +75,9 @@ Response: In order to do this, I must step back and observe my own actions and i
 
 Do you want to continue the conversation? (yes/no): 
 
-<pre>
+
 <
-`
+
 
 ## To do
 
