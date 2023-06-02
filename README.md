@@ -16,6 +16,29 @@ ragTAG embodies the concept of a multi-agent system, where each agent represents
 10. The last agent in the chain does their best to summarise.
 11. Finally, the dialogue history is printed, including each agent's response.
 
+The "Controller" class is responsible for orchestrating multi-agent conversations where agents are separate instances of the OpenAI API. Here's the logic:
+
+- It starts by initializing the controller with agents and a budget of tokens for each response.
+- The method get_attributes assigns attributes to each agent by making API calls to describe and gain the perspective of each agent.
+- The generate_prompt method generates the prompts for each agent by appending their respective attributes and previous dialogues.
+- The process_single_task method uses threading to make API calls for each agent asynchronously. It also retries the API calls if there are errors or blank responses.
+- The process_tasks method iterates through each agent and processes the tasks. It handles the prompt generation and calls the process_single_task method to get the response. It then stores the responses in the conversation_memory dictionary.
+- It also includes methods to load and save conversation memory to/from a file. 
+- The method summarize_random_answers generates a summary of random responses from an agent using the OpenAI API. 
+- The generate_new_prompt method generates a new prompt by combining the objective of the last agent who answered with the history of the conversation and the output of a model generated from this prompt.
+- The main function prompts the user for the initial question, processes tasks for each agent, prints their responses, and then asks the user if they wish to continue the conversation. If the user chooses to continue, it generates a new prompt and repeats the process. 
+
+## TOKEN COST🤑🕳:
+
+Let's say we have a prompt budget of 1000 tokens for each agent. For each agent, the script makes one API call to generate attributes and another API call to generate the response. Let's assume on average, each response is about half of the budget (which is around 500 tokens).
+
+So, for 10 agents, the total tokens consumed would be roughly:
+
+Attribute Generation: 10 agents * 2 prompts per agent * 80 tokens per prompt = 1600 tokens
+Response Generation: 10 agents * 1 response per agent * 500 tokens per response = 5000 tokens
+Therefore, the total would be around 6600 tokens for each round of conversation.
+
+This is a rough estimate and the actual number can vary depending on the length of the responses and the exact number of tokens used in each API call.
 
 #Example Output
 >
