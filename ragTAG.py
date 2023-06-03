@@ -29,7 +29,7 @@ class Controller:
                 engine="text-davinci-003",
                 prompt=prompt,
                 max_tokens=80,
-                temperature=0.4,
+                temperature=0.5,
                 n=1,
                 stop=None
             )
@@ -131,7 +131,7 @@ class Controller:
                     prompt=full_prompt,
                     max_tokens=token_budget,
                     temperature=1,
-                    frequency_penalty=0.5
+                    frequency_penalty = 0.5
                 )
 
                 response = future.result(timeout=60)
@@ -158,7 +158,7 @@ class Controller:
                 generated_text = generated_text.replace("Finally,", "")
                 # Filter out the word "lastly"
                 generated_text = generated_text.replace("Lastly,", "")
-                
+
                 return generated_text
 
             except concurrent.futures.TimeoutError:
@@ -171,7 +171,6 @@ class Controller:
 
         # Return an empty string if all retries are exhausted and the response is still blank
         return ""
-
 
 
 
@@ -200,19 +199,19 @@ class Controller:
         except FileNotFoundError:
             self.conversation_memory = {}
 
-    def summarize_random_answers(self, num_answers):
+    def summarize_recent_answers(self, num_answers):
         agents = list(self.conversation_memory.keys())
         agent = random.choice(agents)
         agent_answers = self.conversation_memory.get(agent, [])
 
         if len(agent_answers) >= num_answers:
-            random_answers = random.sample(agent_answers, num_answers)
-            random_answers_combined = "\n".join(random_answers)
-            for i in range(3):  # Retry up to 3 times
+            recent_answers = agent_answers[-num_answers:]
+            recent_answers_combined = "\n".join(recent_answers)
+            for i in range(3):
                 try:
                     response = openai.Completion.create(
                         engine="text-davinci-003",
-                        prompt=random_answers_combined,
+                        prompt=recent_answers_combined,
                         max_tokens=100,
                         temperature=0,
                         n=1,
@@ -229,8 +228,6 @@ class Controller:
                     return "Error occurred while summarizing"
         else:
             return "Insufficient answers to summarize"
-
-
 
     def openai_summarize(self, prompt):
         response = openai.Completion.create(
@@ -363,8 +360,8 @@ def main():
             last_answer = outputs[-1].split(": ", 1)
             history = "\n".join(controller.conversation_memory[last_answer[0]])
             new_prompt = controller.generate_new_prompt(last_answer, history)
-            random_answers_summary = controller.summarize_random_answers(2)
-            new_question = f"{random_answers_summary}\n{new_prompt}"
+            recent_answers_summary = controller.summarize_recent_answers(2)
+            new_question = f"{recent_answers_summary}\n{new_prompt}"
             outputs = controller.process_tasks(new_question, token_budget)
             for output in outputs:
                 agent, response = output.split(": ", 1)
