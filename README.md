@@ -43,6 +43,38 @@ This is a rough estimate and the actual number can vary depending on the length 
 #Example Output
 >
 <pre>
+Enter the maximum token budget: 500
+Enter the number of agents: 2
+Enter the name for agent 1: a skeleton
+Enter the name for agent 2: a philosopher
+Enter your question: how to move without pain or fatigue
+
+a skeleton:
+does not experience pain or fatigue, so it can move easily without encountering any restrictions. It can move in various ways such as walking, running and even dancing!
+
+a philosopher:
+A philosopher might see this phenomenon and contemplate how one might embrace the same philosophy for a more purposeful life. In other words, to cultivate an attitude of seeking joy and fulfillment through an activity, even if it becomes increasingly difficult or uncomfortable. Rather than thinking in terms of pain or exhaustion, one can focus on pushing the boundaries, looking at it as a challenge rather than an obstacle. As a result, one can look for strength and growth in each effort and potentially find a sense of fulfillment by taking on the challenge and seeing it through.
+
+Do you want to continue the conversation? (yes/no): yes
+
+a skeleton
+ a skeleton can be used as a metaphor for enduring difficulty and discomfort in life. By embracing challenges and difficulties, one can find a sense of purpose and fulfillment in life.
+
+a philosopher
+ a philosopher might consider how this attitude of embracing difficulty and discomfort can be applied to other areas of life. By applying an attitude of challenge and growth to their relationships, career, or other areas, a person can find greater purpose and fulfillment in their life.
+
+Do you want to continue the conversation? (yes/no): yes
+
+a skeleton
+Furthermore, a skeleton can represent an attitude of resilience and perseverance; even when faced with tragedy or struggle, the skeleton continues forward. Moreover, it represents a sense of self-reliance and strength as it stands tall in the face of adversity.
+
+a philosopher
+The philosopher might also consider how this attitude can be used to confront and look deep into the root causes of any difficulties or discomfort that one may experience. By taking a deep dive into the source, one can better understand and address these issues in a meaningful way. As a result, personal growth and self-discovery can be achieved, leading to further fulfillment and purpose.
+
+Do you want to continue the conversation? (yes/no): no
+
+
+
 Enter the maximum token budget: 400
 Enter the number of agents: 4
 Enter the name for agent 1: a skeleton
