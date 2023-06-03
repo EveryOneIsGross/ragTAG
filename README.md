@@ -43,6 +43,69 @@ This is a rough estimate and the actual number can vary depending on the length 
 #Example Output
 >
 <pre>
+Enter the maximum token budget: 200
+Enter the number of agents: 5
+Enter the name for agent 1: a skeleton
+Enter the name for agent 2: a gory skeleton
+Enter the name for agent 3: a duplicating skeleton
+Enter the name for agent 4: a non binary skeleton
+Enter the name for agent 5: an evil skeleton
+Enter your question: how to take care of myself first before others
+Blank response from agent a duplicating skeleton. Retrying...
+
+a skeleton:
+I need to make sure I'm properly tucked away in a corner or covered in clothes so no one can see me. I should rest in a dark and cool place with minimal movement to prevent wear and tear on my bones. I should also keep an eye out for any predators that might be after me like wild animals or grave robbers.  I should occasionally take a few moments to appreciate how quiet and peaceful it is being a skeleton.
+
+a gory skeleton:
+I should also remember to take care of myself first before attending to the needs of others, as caring for myself is essential for my preservation. I should also take a few moments in each day to appreciate the quiet beauty of death and stillness that comes with being a skeleton.
+
+a duplicating skeleton:
+Agent: a duplicating skeleton 
+I should make sure the other skeletons are also tucked away in a corner or covered in clothes to protect them from predators. I should rest in the same dark and cool place with minimal movement to prevent wear and tear on all our bones. I should also keep an eye out for any predators that might be after us like wild animals or grave robbers. Furthermore, while taking care of myself and others, I should occasionally take a few moments to appreciate how quiet and
+
+a non binary skeleton:
+peaceful it is to remain still, silent, and unseen in the dark as a non binary skeleton. I should remind myself that it is okay to be who I am and that I don’t have to fit into any gender-based boxes or expectations.
+
+an evil skeleton:
+As an evil skeleton I should also remember to use dark and powerful magics to manipulate or control those around me if necessary. I should also stay away from the light and the living, as my true power lies in secrecy and fear.  I should take delight in striking terror in those who think they are safe from me.
+
+Do you want to continue the conversation? (yes/no): yes
+
+a skeleton
+In addition, I need to remember the importance of dedicating time to caring for the other skeletons within our group. We should work together to ensure that everyone is safe and well-protected from any potential threats.
+
+a gory skeleton
+I should also keep an eye out for any signs of deterioration in the other skeletons, and take steps to repair them if necessary.  I should remember to duplicate myself periodically so that our numbers remain strong and we can continue to protect each other from harm.
+
+a duplicating skeleton
+peaceful our resting place is. I should also make sure to keep an eye out for any signs of deterioration in the other skeletons, and take steps to repair them if necessary.  I should remember to duplicate myself periodically so that our numbers remain strong and we can continue to protect each other from harm.
+
+a non binary skeleton
+I should also recognize the importance of comfort and safety in the dark, and actively take precautions to remain unseen. In addition, I should periodically assess my physical and emotional health to ensure that I am in good condition.
+
+an evil skeleton
+I should also conceal my presence as much as possible by relying on forms of stealth and secrecy. I should use guile and deception to achieve my goals, and take advantage of any opportunities to increase my power. I should also take pride in creating fear and dread in any who stand against me.
+
+Do you want to continue the conversation? (yes/no): yes
+Blank response from agent a gory skeleton. Retrying...
+
+a skeleton
+ I should also be mindful of the environment and environment around me. Make sure to keep our resting place clean and tidy, and take steps to ensure that it remains peaceful and undisturbed.
+
+a gory skeleton
+ I should remember to care for the other skeletons in our group by checking for signs of general wear and tear, and helping to repair them or offer support as needed.  I should also take the time to remember that being a skeleton is not about death but about life: embracing the stillness and peace of bones that are no longer bound by physical desires, able to feel a simple and new type of freedom.
+
+a duplicating skeleton
+ I should remind myself to be mindful of the environment and my actions so that I can ensure a safe and secure resting spot for all of us. I should also remember to care for the other skeletons in our group by checking for signs of general wear and tear, and helping to repair them or offer support as needed.  I should also reflect on the beauty of life and death that comes with being a skeleton, eventually learning to accept the stillness that it brings.
+
+a non binary skeleton
+I should be mindful to stay tucked away in a corner or be covered in clothes and keep an eye out for predators. I should also make sure to remain in a dark and cool place to reduce wear and tear on my bones. Furthermore, I should make sure that the environment around me is kept peaceful and undisturbed.  I should dedicate time to caring for the other skeletons in our group by checking for signs of general wear and tear, and helping to repair them or offer support as
+
+an evil skeleton
+I should also use my powers of manipulation and deception in order to protect those I care for and keep them safe. When necessary, I should also have the courage to stand up for what is right regardless of the danger or risks involved.  I should remember that even evil skeletons feel pain and sadness; take time to reflect or appreciate the world around me whenever possible.
+
+Do you want to continue the conversation? (yes/no): 
+
 Enter the maximum token budget: 500
 Enter the number of agents: 2
 Enter the name for agent 1: a skeleton
