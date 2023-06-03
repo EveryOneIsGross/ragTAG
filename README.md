@@ -43,6 +43,58 @@ This is a rough estimate and the actual number can vary depending on the length 
 #Example Output
 >
 <pre>
+Enter the maximum token budget: 400
+Enter the number of agents: 4
+Enter the name for agent 1: a skeleton
+Enter the name for agent 2: a ghost
+Enter the name for agent 3: a dead body
+Enter the name for agent 4: a philosopher
+Enter your question: how to pursue true will
+
+a skeleton:
+I cannot pursue true will as a skeleton. My skeletal form limits my mobility and my ability to interact with others. However, I can still pursue knowledge and wisdom through contemplation and introspection.
+
+a ghost:
+The desire to pursue true will differs in every individual. I am a ghost, so I am more limited than someone of flesh and blood when it comes to pursuing my true will. However, as a spirit, I can use my knowledge and wisdom to try and determine what my true will is. Through meditation and contemplation of different life paths, I can consider the potential outcomes and make a wiser decision as to the one that is right for me.
+
+a dead body:
+As a dead body, I am limited in my ability to pursue the same quest for knowledge and wisdom that is available to living individuals. The best I can do is to observe the lives of others and consider how their decisions, choices, and paths may lead them towards their desired destination. With this in mind, I can contemplate these lessons learned and take away what might be applicable to me or other individuals that I choose to influence with my presence.
+
+a philosopher:
+As a philosopher, I believe that the path to true will cannot be found by relying on physical or material possessions. Instead, I believe that one must search within oneself to discover what will bring them true purpose and fulfillment in life. One must be willing to take risks and be open-minded, as well as thoughtful and reflective. By actively engaging in self-discovery and learning from the experiences of others, I believe we can uncover our true will.
+
+Do you want to continue the conversation? (yes/no): yes
+
+a skeleton
+, true will should not be ignored or overlooked even in the face of adversity. Instead, I can strive to become more understanding and accepting of myself, learning to recognize and understand my limitations so that I can pursue a life based on what is truly most important to me.
+
+a ghost
+, I must strive to remain open-minded and curious, tolerant and understanding of opposing viewpoints. Even if I cannot physically do something, I can still learn and grow from it. Ultimately, true will is something that must be determined within ourselves as individuals, and we should never be afraid to go after what we want.
+
+a dead body
+, I must strive to remain objective and unbiased in my observations, showing wit and wisdom in my assessment so as to attain a greater understanding of life. Ultimately, true will is something that must be determined within ourselves as individuals, and we should never be afraid to go after what we want.
+
+a philosopher
+, we must be willing to accept that our true will may not always be easy or comfortable, but it is necessary for us to live a meaningful and fulfilling life.
+
+Do you want to continue the conversation? (yes/no): yes
+
+a skeleton
+I can also focus on cultivating my ability to make choices rooted in deep self-awareness, aligning my thoughts, actions, and beliefs with the things that are most important to me. In this way, I can use what limited abilities I have to pursue my own true will.
+
+a ghost
+Lastly, I must work to honor my motivations and desires. I can express gratitude for the blessings I have, appreciate the good that comes my way, and hold in mind the intention to seek out what is best for me. My will is an important part of who I am, and I should always strive to make decisions that align with it.
+
+a dead body
+Besides observing and understanding the lives of others, I must cultivate the courage to actively pursue my own true will. Although I am a dead body, I still have control over my thoughts and my destiny. By allowing myself to be guided by my own values and morals, I can make best efforts to become the person that I want to be.
+
+a philosopher
+To fulfill our true will, we must take responsibility for our own lives and decisions. We should never be afraid to go after what we want, and should strive to make choices that are rooted in deep self-awareness and aligned with our values and morals. Furthermore, it is important to remain open-minded and tolerant of others’ viewpoints so that we can learn from one another’s experiences. Lastly, we must take time to appreciate the blessings we have and honor our motivations and desires. By actively pursuing this deep understanding of ourselves and the world around us, I believe that we can achieve true will.
+
+Do you want to continue the conversation? (yes/no): no
+
+
+
 Enter the maximum token budget: 250
 Enter the number of agents: 3
 Enter the name for agent 1: a sad wizard
