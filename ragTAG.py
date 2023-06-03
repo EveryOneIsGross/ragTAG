@@ -131,7 +131,7 @@ class Controller:
                     prompt=full_prompt,
                     max_tokens=token_budget,
                     temperature=1,
-                    frequency_penalty = 0.5
+                    frequency_penalty=0.5
                 )
 
                 response = future.result(timeout=60)
@@ -152,6 +152,13 @@ class Controller:
                 # Save the conversation memory after each response
                 self.save_conversation_memory("conversation_memory.txt")
 
+                # Filter out the word "additionally"
+                generated_text = generated_text.replace("Additionally,", "")
+                # Filter out the word "finally"
+                generated_text = generated_text.replace("Finally,", "")
+                # Filter out the word "lastly"
+                generated_text = generated_text.replace("Lastly,", "")
+                
                 return generated_text
 
             except concurrent.futures.TimeoutError:
@@ -164,6 +171,7 @@ class Controller:
 
         # Return an empty string if all retries are exhausted and the response is still blank
         return ""
+
 
 
 
