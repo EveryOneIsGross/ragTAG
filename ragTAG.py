@@ -9,12 +9,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Assign OpenAI API key from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
+openai.api_key = os.getenv('OPENAI_API_KEY'
+)
 class Controller:
-    def __init__(self, agents, response_token_budget):
+    def __init__(self, agents, token_budget, max_token_limit):
         self.agents = agents
-        self.response_token_budget = response_token_budget
+        self.max_token_limit = max_token_limit
+        self.token_budget = min(token_budget, max_token_limit)  # Ensure token_budget doesn't exceed max_token_limit
+        self.response_token_budget = self.token_budget // 2
         self.agent_perspectives = {}
         self.agent_objectives = {}
         self.conversation_memory = {}
@@ -67,15 +69,15 @@ class Controller:
         perspective = self.agent_perspectives.get(agent, "")
         objective = self.agent_objectives.get(agent, "")
         previous_dialogue_str = "\n".join(previous_dialogue)
-        system_prompt = f"System: You are {agent}. Act and behave as {agent}.\n"
+        system_prompt = f"You are {agent}. Act and behave as {agent}.\n"
 
         if agent == self.agents[0]:  # First agent
-            prompt += f"\nYou:{agent} {objective}"
+            prompt += f"\n{agent} {objective}"
         else:
-            prompt += f"\nYou: {objective}\n{previous_dialogue_str}"
+            prompt += f"\n{objective}\n{previous_dialogue_str}"
 
         if perspective:
-            prompt += f"\nPerspective: {perspective}"
+            prompt += f"\n{perspective}"
 
         memories = []
         for prev_agent, dialogue in self.conversation_memory.items():
@@ -97,7 +99,7 @@ class Controller:
 
         prompt += f"\n\n{memories_section}\n\n{answers_section}"
 
-        return f"{system_prompt}Agent: {agent}, Objective: {objective}. Previous dialogue:\n{previous_dialogue_str}\n\n{prompt}"
+        return f"{system_prompt}Agent: {agent}, {objective}. \n{previous_dialogue_str}\n\n{prompt}"
 
 
     
@@ -189,17 +191,25 @@ class Controller:
         if len(agent_answers) >= num_answers:
             random_answers = random.sample(agent_answers, num_answers)
             random_answers_combined = "\n".join(random_answers)
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=random_answers_combined,
-                max_tokens=100,
-                temperature=0,
-                n=1,
-                stop=None,
-                frequency_penalty = 0.5
-            )
-            summary = response.choices[0].text.strip()
-            return summary
+            for i in range(3):  # Retry up to 3 times
+                try:
+                    response = openai.Completion.create(
+                        engine="text-davinci-003",
+                        prompt=random_answers_combined,
+                        max_tokens=100,
+                        temperature=0,
+                        n=1,
+                        stop=None,
+                        frequency_penalty=0.5
+                    )
+                    summary = response.choices[0].text.strip()
+                    return summary
+                except openai.error.RateLimitError:
+                    print(f"Rate limit exceeded. Retrying in 10 seconds...")
+                    time.sleep(10)
+                except openai.error.OpenAIError as e:
+                    print(f"An error occurred: {str(e)}")
+                    return "Error occurred while summarizing"
         else:
             return "Insufficient answers to summarize"
 
@@ -224,16 +234,16 @@ class Controller:
         
         if objective:
             prompt = (
-                f"System: Stay in character as {agent_name}. Avoid creating lists.\n"
-                f"Agent: {agent_name}, Objective: {objective}. Previous dialogue:\n{history}\n\n"
+                f"System: Stay in character as {agent_name}. Avoid creating lists and do not start sentences with adverbs, do not say words like Additionally.\n"
+                f"Agent: {agent_name}, {objective}. \n{history}\n\n"
             )
             
             try:
                 response = openai.Completion.create(
                     engine="text-davinci-003",
                     prompt=prompt,
-                    max_tokens=500,
-                    temperature=0.8,
+                    max_tokens=100,
+                    temperature=0.9,
                     n=1,
                     stop=None,
                     frequency_penalty = 0.8,
@@ -248,20 +258,22 @@ class Controller:
 
 
     def process_tasks(self, prompt, initial_tokens):
-       # self.get_attributes()
+        # Initialize total_tokens
+        total_tokens = 0 
+
         previous_dialogue = []
         first_iteration = True
 
-        # Set a fixed response_token_budget for all agents except Logic
-        response_token_budget = 300
+        response_token_budget = 100
 
         for agent in self.agents[:-1]:
-
             if first_iteration:
                 tokens = initial_tokens
                 first_iteration = False
             else:
-                tokens = self.logic_token_budget if agent == "Logic" else response_token_budget
+                tokens = response_token_budget
+
+            total_tokens += tokens  # Add used tokens to total_tokens
 
             task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
 
@@ -275,8 +287,6 @@ class Controller:
                     output = " ".join(output.split()[:response_token_budget])
                 previous_dialogue.append(f"{agent}: {output}")
 
-
-
             if agent in self.conversation_memory:
                 self.conversation_memory[agent].append(output)
             else:
@@ -284,13 +294,15 @@ class Controller:
 
         agent = self.agents[-1]
 
-        tokens = self.logic_token_budget if agent == "Logic" else response_token_budget
+        if total_tokens + response_token_budget + 200 <= self.max_token_limit:
+            tokens = response_token_budget + 200  # Assign additional buffer if it doesn't exceed the max_token_limit
+        else:
+            tokens = response_token_budget
+
         task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
 
         output = self.process_single_task(agent, task_prompt, tokens)
         previous_dialogue.append(f"{agent}: {output}")
-
-
 
         if agent in self.conversation_memory:
             self.conversation_memory[agent].append(output)
@@ -301,16 +313,15 @@ class Controller:
 
 
 
+
 def main():
-    max_token_limit = 4000
+    max_token_limit = 3000
     token_budget = int(input("Enter the maximum token budget: "))
-    if token_budget > max_token_limit:
-        print(f"Token budget exceeds the maximum limit of {max_token_limit}. Setting it to {max_token_limit//2}")
-        token_budget = max_token_limit // 2
-    response_token_budget = token_budget // 2
     num_agents = int(input("Enter the number of agents: "))
     agents = [input(f"Enter the name for agent {i+1}: ") for i in range(num_agents)]
-    controller = Controller(agents, response_token_budget)
+    controller = Controller(agents, token_budget, max_token_limit)
+
+
 
     question = input("Enter your question: ")
     initial_tokens = 200
@@ -318,8 +329,8 @@ def main():
 
     for output in outputs:
         agent, response = output.split(": ", 1)
-        print(f"\nAgent: {agent}")
-        print(f"Response: {response}")
+        print(f"\n{agent}:")
+        print(f"{response}")
 
 
     while True:
@@ -335,8 +346,8 @@ def main():
             outputs = controller.process_tasks(new_question, token_budget)
             for output in outputs:
                 agent, response = output.split(": ", 1)
-                print(f"\nAgent: {agent}")
-                print(f"Response: {response}")
+                print(f"\n{agent}")
+                print(f"{response}")
 
 
     conversation_memory_file = "conversation_memory.txt"
