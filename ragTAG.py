@@ -58,10 +58,16 @@ class Controller:
                         temperature = 0.4 + 0.4 * min(word_count, 100) / 100
                         self.agent_temperatures[agent] = temperature
 
+                        # Add sentiment to perspective
+                        summary = self.openai_summarize(attribute_phrase) # Summarize the attribute phrase
+                        sentiment = summary.split("\n")[-1] # Get the sentiment from the summary
+                        self.agent_perspectives[agent] += f"\n{sentiment}" # Append the sentiment to the perspective
+
                         break  # Break the loop as we have successfully retrieved the phrases
                 except openai.error.OpenAIError as e:
                     print(f"An error occurred while generating attribute phrase for {agent}: {e}")
                     time.sleep(10)  # Wait for 10 second before retrying
+
 
 
 
@@ -77,12 +83,14 @@ class Controller:
             prompt += f"\n{objective}\n{previous_dialogue_str}"
 
         if perspective:
-            prompt += f"\n{perspective}"
+            prompt = f"{perspective}\n{prompt}" # Move the perspective to the beginning of the prompt
 
         memories = []
         for prev_agent, dialogue in self.conversation_memory.items():
             if prev_agent == agent or prev_agent in previous_dialogue_str:
-                memories.append(f"Agent: {prev_agent}\n" + "\n".join(dialogue))
+                max_memory_tokens = 100  # Set the maximum number of tokens to include from each memory
+                memories.append(f"Agent: {prev_agent}\n" + "\n".join(dialogue[:max_memory_tokens]))
+
 
         memories_section = ""
         if memories:
@@ -100,6 +108,7 @@ class Controller:
         prompt += f"\n\n{memories_section}\n\n{answers_section}"
 
         return f"{system_prompt}Agent: {agent}, {objective}. \n{previous_dialogue_str}\n\n{prompt}"
+
 
 
     
@@ -213,12 +222,14 @@ class Controller:
         else:
             return "Insufficient answers to summarize"
 
+
+
     def openai_summarize(self, prompt):
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
-            max_tokens=200,
-            temperature=0.2,
+            max_tokens=50,
+            temperature=0.5,
             top_p=1.0,
             frequency_penalty=0.8,
             presence_penalty=0.5,
@@ -226,7 +237,10 @@ class Controller:
             n=1
         )
         summary = response.choices[0].text.strip()
+        sentiment = get_sentiment(summary) # Call the get_sentiment function on the summary
+        summary += f"\n{sentiment}" # Append the sentiment result to the summary
         return summary
+
 
     def generate_new_prompt(self, last_answer, history):
         agent_name = last_answer[0]
@@ -264,7 +278,7 @@ class Controller:
         previous_dialogue = []
         first_iteration = True
 
-        response_token_budget = 100
+        response_token_budget = 250
 
         for agent in self.agents[:-1]:
             if first_iteration:
