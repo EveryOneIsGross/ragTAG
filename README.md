@@ -4,6 +4,10 @@ ragTAG embodies the concept of a multi-agent system, where each agent represents
 
 ![ragTAG_framework](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/be355550-4064-4e56-a8c4-fe67916135ba)
 
+## Workflow:
+
+"As a user, you start by setting up the number of AI agents and their names for the discussion. The app then creates these agents, each with its own unique ideology and memory. You can then enter a discussion prompt, and each agent will respond in turn, considering their unique perspective and past discussions. You can continue the discussion with new prompts, or end it at any time. The agents' memories are saved after each discussion, allowing them to remember past discussions in future sessions. This way, you can have ongoing, evolving discussions with your AI agents, exploring different perspectives on any topic you choose."
+
 #Previous Example Output
 >
 <pre>
