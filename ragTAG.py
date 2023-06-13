@@ -1,376 +1,154 @@
-import os
+import json
 import random
+import os
 import openai
-import time
-import concurrent.futures
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Assign OpenAI API key from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY'
-)
-class Controller:
-    def __init__(self, agents, token_budget, max_token_limit):
-        self.agents = agents
-        self.max_token_limit = max_token_limit
-        self.token_budget = min(token_budget, max_token_limit)  # Ensure token_budget doesn't exceed max_token_limit
-        self.response_token_budget = self.token_budget // 2
-        self.agent_perspectives = {}
-        self.agent_objectives = {}
-        self.conversation_memory = {}
-        self.agent_temperatures = {}
-        self.initial_prompt = True
-
-    def get_attribute_phrase(self, prompt):
-        try:
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=prompt,
-                max_tokens=80,
-                temperature=0.5,
-                n=1,
-                stop=None
-            )
-            attribute_phrase = response.choices[0].text.strip()
-            word_count = len(attribute_phrase.split())
-            return attribute_phrase, word_count
-        except openai.error.OpenAIError as e:
-            print(f"An error occurred while generating attribute phrase: {e}")
-
-
-    def get_attributes(self):
-        for agent in self.agents:
-            describe_prompt = f"Describe yourself as {agent}"
-            perspective_prompt = f"What is your perspective as {agent}"
-
-            for _ in range(3):  # Retry up to 3 times
-                try:
-                    attribute_phrase, word_count = self.get_attribute_phrase(describe_prompt)
-                    perspective, _ = self.get_attribute_phrase(perspective_prompt)
-
-                    if attribute_phrase and perspective:  # If both phrases are successfully retrieved
-                        self.agent_perspectives[agent] = perspective
-                        self.agent_objectives[agent] = attribute_phrase
-
-                        # Calculate temperature based on word count
-                        temperature = 0.4 + 0.4 * min(word_count, 100) / 100
-                        self.agent_temperatures[agent] = temperature
-
-                        # Add sentiment to perspective
-                        summary = self.openai_summarize(attribute_phrase) # Summarize the attribute phrase
-                        sentiment = summary.split("\n")[-1] # Get the sentiment from the summary
-                        self.agent_perspectives[agent] += f"\n{sentiment}" # Append the sentiment to the perspective
-
-                        break  # Break the loop as we have successfully retrieved the phrases
-                except openai.error.OpenAIError as e:
-                    print(f"An error occurred while generating attribute phrase for {agent}: {e}")
-                    time.sleep(10)  # Wait for 10 second before retrying
-
-
-
-
-    def generate_prompt(self, agent, prompt, previous_dialogue):
-        perspective = self.agent_perspectives.get(agent, "")
-        objective = self.agent_objectives.get(agent, "")
-        previous_dialogue_str = "\n".join(previous_dialogue)
-        system_prompt = f"You are {agent}. Act and behave as {agent}.\n"
-
-        if agent == self.agents[0]:  # First agent
-            prompt += f"\n{agent} {objective}"
-        else:
-            prompt += f"\n{objective}\n{previous_dialogue_str}"
-
-        if perspective:
-            prompt = f"{perspective}\n{prompt}" # Move the perspective to the beginning of the prompt
-
-        memories = []
-        for prev_agent, dialogue in self.conversation_memory.items():
-            if prev_agent == agent or prev_agent in previous_dialogue_str:
-                max_memory_tokens = 100  # Set the maximum number of tokens to include from each memory
-                memories.append(f"Agent: {prev_agent}\n" + "\n".join(dialogue[:max_memory_tokens]))
-
-
-        memories_section = ""
-        if memories:
-            memories_section = f"{agent} Memories:"
-            for memory in memories:
-                memories_section += f"\n{memory}"
-
-        answers_section = ""
-        agent_answers = self.conversation_memory.get(agent, [])
-        if agent_answers:
-            answers_section = f"{agent} Answers:"
-            for answer in agent_answers:
-                answers_section += f"\n{answer}"
-
-        prompt += f"\n\n{memories_section}\n\n{answers_section}"
-
-        return f"{system_prompt}Agent: {agent}, {objective}. \n{previous_dialogue_str}\n\n{prompt}"
-
-
-
-    
-
-    def process_single_task(self, agent, task_prompt, tokens):
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
-
-        for i in range(10):
-            try:
-                previous_answers = self.conversation_memory.get(agent, [])
-                full_prompt = "\n".join(previous_answers) + "\n" + task_prompt
-
-                token_budget = self.response_token_budget
-
-                token_budget = min(token_budget, tokens)
-
-                future = executor.submit(
-                    openai.Completion.create,
-                    engine="text-davinci-003",
-                    prompt=full_prompt,
-                    max_tokens=token_budget,
-                    temperature=1,
-                    frequency_penalty = 0.5
-                )
-
-                response = future.result(timeout=60)
-                response_text = [partial_response.text.strip() for partial_response in response.choices]
-                generated_text = " ".join(response_text)
-
-                # Check if the generated text is blank
-                if generated_text.strip() == "":
-                    print(f"Blank response from agent {agent}. Retrying...")
-                    continue  # Continue to the next iteration of the loop to retry
-
-                # Add the response to the conversation memory
-                if agent in self.conversation_memory:
-                    self.conversation_memory[agent].append(generated_text)
-                else:
-                    self.conversation_memory[agent] = [generated_text]
-
-                # Save the conversation memory after each response
-                self.save_conversation_memory("conversation_memory.txt")
-
-                # Filter out the word "additionally"
-                generated_text = generated_text.replace("Additionally,", "")
-                # Filter out the word "finally"
-                generated_text = generated_text.replace("Finally,", "")
-                # Filter out the word "lastly"
-                generated_text = generated_text.replace("Lastly,", "")
-
-                return generated_text
-
-            except concurrent.futures.TimeoutError:
-                print(f"Timeout error with agent {agent}. Retrying...")
-            except openai.error.RateLimitError:
-                print(f"Rate limit exceeded for agent {agent}. Retrying in 10 seconds...")
-                time.sleep(10)
-            except openai.error.OpenAIError as e:
-                print(f"An error occurred with agent {agent}: {str(e)}")
-
-        # Return an empty string if all retries are exhausted and the response is still blank
-        return ""
-
-
-
-
-
-
-
-    def save_conversation_memory(self, filename):
-        with open(filename, "w") as file:
-            for agent, dialogue in self.conversation_memory.items():
-                file.write(f"Agent: {agent}\n")
-                for line in dialogue:
-                    file.write(f"{line}\n")
-
-    def load_conversation_memory(self, filename):
-        try:
-            with open(filename, "r") as file:
-                current_agent = None
-                for line in file:
-                    if line.startswith("Agent:"):
-                        current_agent = line.split(":")[1].strip()
-                        if current_agent not in self.conversation_memory:
-                            self.conversation_memory[current_agent] = []
-                    elif current_agent:
-                        self.conversation_memory[current_agent].append(line.strip())
-        except FileNotFoundError:
-            self.conversation_memory = {}
-
-    def summarize_recent_answers(self, num_answers):
-        agents = list(self.conversation_memory.keys())
-        agent = random.choice(agents)
-        agent_answers = self.conversation_memory.get(agent, [])
-
-        if len(agent_answers) >= num_answers:
-            recent_answers = agent_answers[-num_answers:]
-            recent_answers_combined = "\n".join(recent_answers)
-            for i in range(3):
-                try:
-                    response = openai.Completion.create(
-                        engine="text-davinci-003",
-                        prompt=recent_answers_combined,
-                        max_tokens=100,
-                        temperature=0,
-                        n=1,
-                        stop=None,
-                        frequency_penalty=0.5
-                    )
-                    summary = response.choices[0].text.strip()
-                    return summary
-                except openai.error.RateLimitError:
-                    print(f"Rate limit exceeded. Retrying in 10 seconds...")
-                    time.sleep(10)
-                except openai.error.OpenAIError as e:
-                    print(f"An error occurred: {str(e)}")
-                    return "Error occurred while summarizing"
-        else:
-            return "Insufficient answers to summarize"
-
-    def openai_summarize(self, prompt):
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
-            max_tokens=50,
-            temperature=0.5,
-            top_p=1.0,
-            frequency_penalty=0.8,
-            presence_penalty=0.5,
-            stop=None,
-            n=1
-        )
-        summary = response.choices[0].text.strip()
-        sentiment = get_sentiment(summary) # Call the get_sentiment function on the summary
-        summary += f"\n{sentiment}" # Append the sentiment result to the summary
-        return summary
-
-
-    def generate_new_prompt(self, last_answer, history):
-        agent_name = last_answer[0]
-        objective = self.agent_objectives.get(agent_name, "")
-        
-        if objective:
-            prompt = (
-                f"System: Stay in character as {agent_name}. Avoid creating lists and do not start sentences with adverbs, do not say words like Additionally.\n"
-                f"Agent: {agent_name}, {objective}. \n{history}\n\n"
-            )
-            
-            try:
-                response = openai.Completion.create(
-                    engine="text-davinci-003",
-                    prompt=prompt,
-                    max_tokens=100,
-                    temperature=0.9,
-                    n=1,
-                    stop=None,
-                    frequency_penalty = 0.8,
-                    presence_penalty = 0.5
-                )
-                return response.choices[0].text.strip()
-            except openai.error.OpenAIError as e:
-                print(f"An error occurred: {str(e)}")
-        
-        return ""
-
-
-
-    def process_tasks(self, prompt, initial_tokens):
-        # Initialize total_tokens
-        total_tokens = 0 
-
-        previous_dialogue = []
-        first_iteration = True
-
-        response_token_budget = 250
-
-        for agent in self.agents[:-1]:
-            if first_iteration:
-                tokens = initial_tokens
-                first_iteration = False
-            else:
-                tokens = response_token_budget
-
-            total_tokens += tokens  # Add used tokens to total_tokens
-
-            task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
-
-            output = self.process_single_task(agent, task_prompt, tokens)
-
-            if first_iteration:
-                previous_dialogue.append(f"{agent}: {output}")
-                print(f"\nInitial response of {agent}: {output}")
-            else:
-                if len(output.split()) > response_token_budget:
-                    output = " ".join(output.split()[:response_token_budget])
-                previous_dialogue.append(f"{agent}: {output}")
-
-            if agent in self.conversation_memory:
-                self.conversation_memory[agent].append(output)
-            else:
-                self.conversation_memory[agent] = [output]
-
-        agent = self.agents[-1]
-
-        if total_tokens + response_token_budget + 200 <= self.max_token_limit:
-            tokens = response_token_budget + 200  # Assign additional buffer if it doesn't exceed the max_token_limit
-        else:
-            tokens = response_token_budget
-
-        task_prompt = self.generate_prompt(agent, prompt, previous_dialogue)
-
-        output = self.process_single_task(agent, task_prompt, tokens)
-        previous_dialogue.append(f"{agent}: {output}")
-
-        if agent in self.conversation_memory:
-            self.conversation_memory[agent].append(output)
-        else:
-            self.conversation_memory[agent] = [output]
-
-        return previous_dialogue
-
-
-
-
-def main():
-    max_token_limit = 3000
-    token_budget = int(input("Enter the maximum token budget: "))
-    num_agents = int(input("Enter the number of agents: "))
-    agents = [input(f"Enter the name for agent {i+1}: ") for i in range(num_agents)]
-    controller = Controller(agents, token_budget, max_token_limit)
-
-
-
-    question = input("Enter your question: ")
-    initial_tokens = 200
-    outputs = controller.process_tasks(question, initial_tokens)
-
-    for output in outputs:
-        agent, response = output.split(": ", 1)
-        print(f"\n{agent}:")
-        print(f"{response}")
-
-
+def choose_model_source():
     while True:
-        continue_conversation = input("\nDo you want to continue the conversation? (yes/no): ")
-        if continue_conversation.lower() == "no":
-            break
+        source = input("Do you want to use a 'local' or 'online' model? ").lower()
+        if source in ['local', 'online']:
+            return source
         else:
-            last_answer = outputs[-1].split(": ", 1)
-            history = "\n".join(controller.conversation_memory[last_answer[0]])
-            new_prompt = controller.generate_new_prompt(last_answer, history)
-            recent_answers_summary = controller.summarize_recent_answers(2)
-            new_question = f"{recent_answers_summary}\n{new_prompt}"
-            outputs = controller.process_tasks(new_question, token_budget)
-            for output in outputs:
-                agent, response = output.split(": ", 1)
-                print(f"\n{agent}")
-                print(f"{response}")
+            print("Invalid input. Please enter 'local' or 'online'.")
+
+# Ask the user to choose the model source
+model_source = choose_model_source()
+
+if model_source == 'local':
+    openai.api_base = os.getenv('LOCAL_API_BASE')
+    openai.api_key = os.getenv('LOCAL_API_KEY')
+    model = os.getenv('LOCAL_MODEL_PATH')
+else:
+    # Assign OpenAI API key from environment variable
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    model = os.getenv('OPENAI_ENGINE')
 
 
-    conversation_memory_file = "conversation_memory.txt"
-    controller.save_conversation_memory(conversation_memory_file)
+class Agent:
+    def __init__(self, name, model):
+        self.name = name
+        self.model = model
+        self.memory = self.load_memory()
+        self.ideology = self.generate_ideology()
+        self.temperature = 0.8
 
-if __name__ == '__main__':
-    main()
+    def load_memory(self):
+        filename = self.name.replace(" ", "_") + '.json'
+        try:
+            with open(filename, 'r') as fp:
+                data = json.load(fp)
+            self.name = data.get("name", self.name)
+            self.ideology = data.get("ideology", self.generate_ideology())
+            return data.get("memory", {})
+        except FileNotFoundError:
+            return {}
+
+
+
+    def save_memory(self):
+        filename = self.name.replace(" ", "_") + '.json'
+        data = {
+            "name": self.name,
+            "ideology": self.ideology,
+            "memory": self.memory
+        }
+        with open(filename, 'w') as fp:
+            json.dump(data, fp)
+
+
+    def call_ai_api(self, prompt, max_tokens=1000, temperature=1, presence_penalty=1, frequency_penalty=1.0, n=1, echo=False, stream=False):
+        response = openai.Completion.create(
+            model=self.model,
+            prompt=prompt,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            presence_penalty=presence_penalty,
+            frequency_penalty=frequency_penalty,
+            n=n,
+            echo=echo,
+            stream=stream
+        )
+        return response.choices[0].text.strip()
+
+    def generate_ideology(self):
+        system_instruction = f"Acting strictly in character as {self.name} describe how your defining attributes and"
+        prompt_agent = f"{system_instruction} your unique perspective guide your decisions."
+        return self.call_ai_api(prompt_agent, max_tokens=200, temperature=1, presence_penalty=1.5, frequency_penalty=1.2)
+
+    def respond_to_prompt(self, user_prompt, shared_memory, summary=None):
+        sentiment_of_question = self.analyze_sentiment(user_prompt)
+        other_responses = [f"{name}: {conv['agent_response']}" for name, conv in shared_memory.items() if name != self.name]
+        other_responses_context = ". ".join(other_responses)
+
+        # Retrieve previous discussions from memory
+        past_discussions = ". ".join([f"Question: {q}. Response: {a['agent_response']}" for q, a in list(self.memory.items())[-1:]])  # Retrieves last 1 discussions
+
+        system_instruction = f"Considering your '{self.ideology}', your attitude towards the subject '{sentiment_of_question}', and your past discussions '{past_discussions}', answer the following question from your unique perspective as {self.name}. Do not create lists or respond with a question."
+        prompt_user = f"{system_instruction} Consider the question: '{user_prompt}'"
+        response_user = self.call_ai_api(prompt_user, max_tokens=1000, temperature=self.temperature, presence_penalty=1, frequency_penalty=0.8)
+        sentiment_of_response = self.analyze_sentiment(response_user)
+        self.adjust_temperature(sentiment_of_response)
+        return response_user
+
+
+    def analyze_sentiment(self, text):
+        system_instruction = f"Analyze the sentiment of the following response by {self.name}: '{text}'."
+        response_sentiment = self.call_ai_api(system_instruction, max_tokens=100, temperature=0.7, presence_penalty=1, frequency_penalty=0.8)
+        if 'positive' in response_sentiment.lower():
+            return 'positive'
+        elif 'negative' in response_sentiment.lower():
+            return 'negative'
+        else:
+            return 'neutral'
+
+    def adjust_temperature(self, sentiment):
+        if sentiment == 'positive':
+            self.temperature = max(0.9, self.temperature + 0.1)
+        elif sentiment == 'negative':
+            self.temperature = min(0.9, self.temperature - 0.2)
+        else:
+            self.temperature = 0.6
+
+def conduct_round_table_discussion():
+    # Set up agents
+    number_of_agents = int(input("Enter the number of agents you want in the discussion: "))
+    
+    # Dictionary of possible agent names
+    agent_names_dict = ["a skeleton", "a witch", "a wizard", "a stoic", "the left handed path", "a pragmatist", "a ghost", "a vampire", "a werewolf", "a zombie"]
+    
+    agents = []
+    for i in range(number_of_agents):
+        agent_name = input(f"Enter the name of agent {i+1} (leave blank for random selection): ")
+        
+        # If the user doesn't enter a name, select a random one from the dictionary
+        if not agent_name:
+            agent_name = random.choice(agent_names_dict)
+        
+        agents.append(Agent(agent_name, model))
+
+    # Conduct discussion
+    while True:
+        user_prompt = input("Enter a discussion prompt or 'quit' to exit: ")
+        if user_prompt.lower() == 'quit':
+            break
+
+        shared_memory = {}
+
+        for agent in agents:
+            print(f"\nAgent: {agent.name}\n")
+            agent_response = agent.respond_to_prompt(user_prompt, shared_memory)
+            print(f"\nResponse:\n {agent_response}\n")
+            shared_memory[agent.name] = {"agent_response": agent_response}
+        
+        # Update and save agent memories
+        for agent in agents:
+            agent.memory[user_prompt] = shared_memory[agent.name]
+            agent.save_memory()
+
+
+if __name__ == "__main__":
+    conduct_round_table_discussion()
