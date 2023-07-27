@@ -284,21 +284,4 @@ Do you want to continue the conversation? (yes/no): no
 
 </pre>
 
-
-## To do
-
-✅ have an executable proof of concept
-
-❌ refine internal prompts to clarify format and content of answers
-
-❌ augment the summary with better guided prompts
-
-❌ format the output better
-
-❌ figure out why I made this
-
-❌ rewrite in a language that I can deploy easier
-
-❌ build into a web interface or as a chatgpt plugin
-  
   
