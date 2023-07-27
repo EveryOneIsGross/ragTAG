@@ -1,6 +1,28 @@
 # hermeticRAGTAG 
+(Randomly Assigned Agents with Thematic Ideologies)
 
-The latest version of ragtag is a rewrite to incorporate (for now random) hermetic principles, as well as use embeddings and additional nlp processing. Here is an example reponse from this new script, after a conversation on love. NOTE: it isn't well tuned and agents are inheriting each others characters or perspectives occasionally.
+hermeticRAGTAG creates a set of randomly assigned agents, each with their own individual ideology based on the seven Hermetic Principles. Each agent has their own unique perspective and characteristics, thereby responding to user prompts in a distinct manner.
+
+Features
+
+Contextual Awareness:
+Each agent maintains a form of conversational awareness through the use of a memory mechanism. This allows the agent to respond to user prompts not just based on the current input, but also considering the context of preceding conversation.
+
+Adaptive Sentiment Analysis:
+The agents are equipped with a sentiment analysis feature that adjusts their "temperature" (randomness in response) based on the sentiment of the response.
+
+Keyword Extraction:
+Keywords from user prompts and agent responses are extracted and stored in the agent's memory. This aids in generating more context-aware responses.
+
+Sentence Embeddings:
+The text is processed to extract sentence embeddings using spaCy's en_core_web_lg model, enabling semantic understanding of the input and comparison with past responses.
+
+Unique Agent Ideology:
+Each agent has a unique ideology generated using the principles of Hermetic philosophy. This shapes the agent's responses and objectives.
+
+---
+
+Here is an example reponse after a multiround conversation on love. NOTE: it isn't well tuned and agents are inheriting each others characters or perspectives occasionally.
 
 ```
 What is your personal favourite breed of dog?
