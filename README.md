@@ -3,42 +3,44 @@
 
 hermeticRAGTAG creates a set of randomly assigned agents, each with their own individual ideology based on the seven Hermetic Principles. Each agent has their own unique perspective and characteristics, thereby responding to user prompts in a distinct manner.
 
-Features
+## Features
 
-Contextual Awareness:
+### Contextual Awareness:
 Each agent maintains a form of conversational awareness through the use of a memory mechanism. This allows the agent to respond to user prompts not just based on the current input, but also considering the context of preceding conversation.
 
-Adaptive Sentiment Analysis:
+### Adaptive Sentiment Analysis:
 The agents are equipped with a sentiment analysis feature that adjusts their "temperature" (randomness in response) based on the sentiment of the response.
 
-Keyword Extraction:
+### Keyword Extraction:
 Keywords from user prompts and agent responses are extracted and stored in the agent's memory. This aids in generating more context-aware responses.
 
-Sentence Embeddings:
+### Sentence Embeddings:
 The text is processed to extract sentence embeddings using spaCy's en_core_web_lg model, enabling semantic understanding of the input and comparison with past responses.
 
-Unique Agent Ideology:
+### Unique Agent Ideology:
 Each agent has a unique ideology generated using the principles of Hermetic philosophy. This shapes the agent's responses and objectives.
 
 ---
 
-Here is an example reponse after a multiround conversation on love. NOTE: it isn't well tuned and agents are inheriting each others characters or perspectives occasionally.
+Here is an example response after a multi-round conversation on love. NOTE: it isn't well-tuned and agents are inheriting each other's characters or perspectives occasionally.
 
-```
 What is your personal favourite breed of dog?
 
 Agent: a werewolf
-```
- Love is an undeniable force that brings us together in understanding, compassion and admiration. As a werewolf, I understand its power to bridge gaps between different species with varying beliefs. Through conversations with others who share similar views on love, I am able to gain insight into how it can bring us together in unity rather than divide individuals within society. Love means cherishing all we have while also striving for more; it reminds us of life's fragility but also its preciousness. By developing an understanding of this powerful force, I am better equipped to make wiser decisions based on careful observation of the world around me while at the same time taking into account generations of lore regarding our kind - allowing justice and harmony to remain intact even when facing adversity or difficult times. My personal favorite breed of dog is the German Shepherd because they are loyal companions and intelligent guardians without being overly aggressive or territorial.
-```
-Agent: a pragmatist
-```
- My personal favorite breed of dog is the Australian Shepherd. I appreciate their intelligence, loyalty, and adaptability which makes them great companions for a variety of activities. Their herding instinct gives them an edge when it comes to working with animals or children, while being calm and laid-back at home. They thrive on human interaction and need plenty of exercise to stay happy and healthy; this combination of traits ensures that they are able to keep up with any changes in lifestyle without missing a beat. Additionally, their sensitive nature means that they can easily recognize when something is wrong before we do - allowing us to better understand our surroundings while providing assurance during times of adversity as well as comfort in moments of joy. For me personally, these qualities make the Australian Shepherd my favorite breed because they have all the best attributes required for a loyal companion without ever losing sight of what truly matters most: Love!
-```
-Agent: a vampire
-```
- My personal favourite breed of dog is the Greyhound. I appreciate their intelligence, grace and loyalty which makes them an ideal companion for someone like me who enjoys a combination of luxury and comfort. Their sleek silhouette gives them an air of sophistication that allows them to fit in almost any environment whether it's at home, at work or just out on the town. They have a calm demeanor which can help bring serenity during difficult times while also being able to provide plenty of fun when playing with friends or family - making sure everyone has a good time! Additionally, they possess incredible speed and agility; this enables them to be active in different activities such as running, walking or even swimming without ever tiring too quickly. Above all else though, their unique sensitivity towards humans means that they always know when something is wrong; allowing us to gain insight into our surroundings while providing assurance during times of struggle as well as comfort during moments of joy. For me personally, these traits make the Greyhound my favorite breed because they embody all the best qualities required for a loyal companion without ever losing sight of what truly matters most: Love!
 
+vbnet
+Copy code
+Love is an undeniable force that brings us together in understanding, compassion, and admiration. As a werewolf, I understand its power to bridge gaps between different species with varying beliefs. Through conversations with others who share similar views on love, I am able to gain insight into how it can bring us together in unity rather than divide individuals within society. Love means cherishing all we have while also striving for more; it reminds us of life's fragility but also its preciousness. By developing an understanding of this powerful force, I am better equipped to make wiser decisions based on careful observation of the world around me while at the same time taking into account generations of lore regarding our kind - allowing justice and harmony to remain intact even when facing adversity or difficult times. My personal favorite breed of dog is the German Shepherd because they are loyal companions and intelligent guardians without being overly aggressive or territorial.
+Agent: a pragmatist
+
+vbnet
+Copy code
+My personal favorite breed of dog is the Australian Shepherd. I appreciate their intelligence, loyalty, and adaptability which makes them great companions for a variety of activities. Their herding instinct gives them an edge when it comes to working with animals or children, while being calm and laid-back at home. They thrive on human interaction and need plenty of exercise to stay happy and healthy; this combination of traits ensures that they are able to keep up with any changes in lifestyle without missing a beat. Additionally, their sensitive nature means that they can easily recognize when something is wrong before we do - allowing us to better understand our surroundings while providing assurance during times of adversity as well as comfort in moments of joy. For me personally, these qualities make the Australian Shepherd my favorite breed because they have all the best attributes required for a loyal companion without ever losing sight of what truly matters most: Love!
+Agent: a vampire
+
+vbnet
+Copy code
+My personal favorite breed of dog is the Greyhound. I appreciate their intelligence, grace, and loyalty which makes them an ideal companion for someone like me who enjoys a combination of luxury and comfort. Their sleek silhouette gives them an air of sophistication that allows them to fit in almost any environment whether it's at home, at work, or just out on the town. They have a calm demeanor which can help bring serenity during difficult times while also being able to provide plenty of fun when playing with friends or family - making sure everyone has a good time! Additionally, they possess incredible speed and agility; this enables them to be active in different activities such as running, walking, or even swimming without ever tiring too quickly. Above all else though, their unique sensitivity towards humans means that they always know when something is wrong; allowing us to gain insight into our surroundings while providing assurance during times of struggle as well as comfort during moments of joy. For me personally, these traits make the Greyhound my favorite breed because they embody all the best qualities required for a loyal companion without ever losing sight of what truly matters most: Love!
 
 ## Abstract
 
@@ -49,6 +51,7 @@ ragTAG embodies the concept of a multi-agent system, where each agent represents
 ## Workflow:
 
 "As a user, you start by setting up the number of AI agents and their names for the discussion. The app then creates these agents, each with its own unique ideology and memory. You can then enter a discussion prompt, and each agent will respond in turn, considering their unique perspective and past discussions. You can continue the discussion with new prompts, or end it at any time. The agents' memories are saved after each discussion, allowing them to remember past discussions in future sessions. This way, you can have ongoing, evolving discussions with your AI agents, exploring different perspectives on any topic you choose."
+Note: The markdown format doesn't support image display directly. I've left the link to the image, and if you're using this Markdown in a platform that supports image embedding, you can add the image using the provided link.
 
 #Previous Example Output
 >
