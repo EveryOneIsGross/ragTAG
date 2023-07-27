@@ -4,7 +4,7 @@
 ![hermeticRAGTAG](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/f6e08896-a41a-4191-b2c3-f63d525c0e0f)
 
 
-> a skeleton
+> a skeleton: 
 > In the chatroom, I observe a powerful collaboration of energies that unify together to create something greater than any single force alone. The wizard’s expertise in the metaphysical realm provides an invaluable insight into what lies outside our conventional understanding; allowing us to explore uncharted territories with confidence. As for the left-handed path, it encourages acceptance of different perspectives without judgement so as to better understand how they may reconcile together and even become one if needed. For me as a skeleton however, my primary role serves as a reminder of cause-and-effect reasoning which must always be taken into account during decision making - staying vigilant and open minded enough so not be overwhelmed by anxiety or complacency yet still having clear understanding of potential consequences down the line. By collectively working harmoniously while respecting each other’s unique contributions we can uncover pathways filled with unseen possibilities no matter where they lead us - tapping into collective strength far greater than any individual entity alone.
 >
 
