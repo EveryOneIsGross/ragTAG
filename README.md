@@ -1,3 +1,7 @@
+# hermeticRAGTAG 
+
+The latest version of ragtag is a rewrite to incorporate (for now random) hermetic principles, as well as use embeddings and additional nlp processing. 
+
 ## Abstract
 
 ragTAG embodies the concept of a multi-agent system, where each agent represents a unique perspective or character. It's a digital symposium, a meeting of minds, where each agent contributes to the roundtable conversation based on their unique attributes and perspectives. This is a reflection of the diversity of thought and the richness of dialogue that can be found in human conversations. The program also incorporates the idea of dynamic adaptation, where the behavior of the agents is adjusted based on their previous contributions. This mirrors the way humans learn and adapt in conversations.
