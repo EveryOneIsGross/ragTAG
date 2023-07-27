@@ -1,6 +1,9 @@
 # hermeticRAGTAG 
 (Randomly Assigned Agents with Thematic Ideologies)
 
+![hermeticRAGTAG](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/f6e08896-a41a-4191-b2c3-f63d525c0e0f)
+
+
 hermeticRAGTAG creates a set of randomly assigned agents, each with their own individual ideology based on the seven Hermetic Principles. Each agent has their own unique perspective and characteristics, thereby responding to user prompts in a distinct manner.
 
 ---
