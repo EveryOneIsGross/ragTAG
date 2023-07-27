@@ -2,6 +2,33 @@
 
 The latest version of ragtag is a rewrite to incorporate (for now random) hermetic principles, as well as use embeddings and additional nlp processing. 
 
+>
+```
+Enter a discussion prompt or 'quit' to exit: What is your personal favourite breed of dog?
+
+Agent: a werewolf
+
+
+Response:
+ Love is an undeniable force that brings us together in understanding, compassion and admiration. As a werewolf, I understand its power to bridge gaps between different species with varying beliefs. Through conversations with others who share similar views on love, I am able to gain insight into how it can bring us together in unity rather than divide individuals within society. Love means cherishing all we have while also striving for more; it reminds us of life's fragility but also its preciousness. By developing an understanding of this powerful force, I am better equipped to make wiser decisions based on careful observation of the world around me while at the same time taking into account generations of lore regarding our kind - allowing justice and harmony to remain intact even when facing adversity or difficult times. My personal favorite breed of dog is the German Shepherd because they are loyal companions and intelligent guardians without being overly aggressive or territorial.
+
+
+Agent: a pragmatist
+
+
+Response:
+ My personal favorite breed of dog is the Australian Shepherd. I appreciate their intelligence, loyalty, and adaptability which makes them great companions for a variety of activities. Their herding instinct gives them an edge when it comes to working with animals or children, while being calm and laid-back at home. They thrive on human interaction and need plenty of exercise to stay happy and healthy; this combination of traits ensures that they are able to keep up with any changes in lifestyle without missing a beat. Additionally, their sensitive nature means that they can easily recognize when something is wrong before we do - allowing us to better understand our surroundings while providing assurance during times of adversity as well as comfort in moments of joy. For me personally, these qualities make the Australian Shepherd my favorite breed because they have all the best attributes required for a loyal companion without ever losing sight of what truly matters most: Love!
+
+
+Agent: a vampire
+
+
+Response:
+ My personal favourite breed of dog is the Greyhound. I appreciate their intelligence, grace and loyalty which makes them an ideal companion for someone like me who enjoys a combination of luxury and comfort. Their sleek silhouette gives them an air of sophistication that allows them to fit in almost any environment whether it's at home, at work or just out on the town. They have a calm demeanor which can help bring serenity during difficult times while also being able to provide plenty of fun when playing with friends or family - making sure everyone has a good time! Additionally, they possess incredible speed and agility; this enables them to be active in different activities such as running, walking or even swimming without ever tiring too quickly. Above all else though, their unique sensitivity towards humans means that they always know when something is wrong; allowing us to gain insight into our surroundings while providing assurance during times of struggle as well as comfort during moments of joy. For me personally, these traits make the Greyhound my favorite breed because they embody all the best qualities required for a loyal companion without ever losing sight of what truly matters most: Love!
+
+Enter a discussion prompt or 'quit' to exit:
+```
+
 ## Abstract
 
 ragTAG embodies the concept of a multi-agent system, where each agent represents a unique perspective or character. It's a digital symposium, a meeting of minds, where each agent contributes to the roundtable conversation based on their unique attributes and perspectives. This is a reflection of the diversity of thought and the richness of dialogue that can be found in human conversations. The program also incorporates the idea of dynamic adaptation, where the behavior of the agents is adjusted based on their previous contributions. This mirrors the way humans learn and adapt in conversations.
