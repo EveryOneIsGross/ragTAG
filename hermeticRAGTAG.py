@@ -104,6 +104,12 @@ class Agent:
                 "objectives": ideology["objectives"]
             }
 
+
+    def construct_chatroom_prompt(self, agents):
+        other_agents = [agent.name for agent in agents if agent.name != self.name]
+        return f"You are in a chatroom with {', '.join(other_agents)}."
+
+
     def respond_to_prompt(self, user_prompt, previous_responses):
         recent_conversation = ". ".join(previous_responses[-1:])
 
@@ -172,6 +178,9 @@ class Agent:
         # Save the updated memory
         self.save_memory()
         
+        # Record the conversation history
+        self.record_conversation_history(user_prompt, response_user, user_keywords, response_keywords)
+        
         return response_user
 
 
@@ -184,6 +193,7 @@ class Agent:
             data = {"conversation_history": []}
 
         conversation_item = {
+            "agent_name": self.name,  # Add agent name to the conversation item
             "user_prompt": user_prompt,
             "agent_response": agent_response,
             "user_keywords": user_keywords,
@@ -194,6 +204,7 @@ class Agent:
 
         with open(conversation_file, 'w') as fp:
             json.dump(data, fp)
+
 
     def analyze_sentiment(self, text):
         # Use TextBlob for sentiment analysis
@@ -294,8 +305,9 @@ def conduct_round_table_discussion():
             break
 
         for agent in agents:
-            print(f"\nAgent: {agent.name}\n")
-            agent_response = agent.respond_to_prompt(user_prompt, previous_responses)
+            print(f"\nAgent: {agent.name}\n")          
+            chatroom_prompt = agent.construct_chatroom_prompt(agents)
+            agent_response = agent.respond_to_prompt(user_prompt + ". " + chatroom_prompt, previous_responses)
             previous_responses.append(agent_response)
             print(f"\nResponse:\n {agent_response}\n")
 
