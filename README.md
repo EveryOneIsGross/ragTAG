@@ -1,8 +1,6 @@
 # hermeticRAGTAG 
 (Randomly Assigned Agents with Thematic Ideologies)
 
-09/09/23 note: I can't remember why I chose the ragTAG acronym, but it was before RAG was about tool retrival. Maybe I'll add tools to the table, but just incase someone came here for the wrong tool. 🤙
-
 ![hermeticRAGTAG](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/f6e08896-a41a-4191-b2c3-f63d525c0e0f)
 
 
