@@ -1,4 +1,4 @@
-# hermeticRAGTAG 
+ragTAG 
 (Randomly Assigned Agents with Thematic Ideologies)
 
 ![hermeticRAGTAG](https://github.com/EveryOneIsGross/ragTAG/assets/23621140/f6e08896-a41a-4191-b2c3-f63d525c0e0f)
